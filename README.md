@@ -1,6 +1,6 @@
 # AI Interview Simulator
-An AI-powered interview preparation platform built with React, Node.js, Express, PostgreSQL, and the OpenAI API.
-
+An AI-powered interview practice platform that allows users to complete mock interviews, receive AI-generated feedback, and track their previous interview performance.
+Built with React, Node.js, Express, PostgreSQL, and the OpenAI API.
 ## Tech Stack
 
 ### Frontend
