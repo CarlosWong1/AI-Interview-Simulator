@@ -1,5 +1,3 @@
-import './pagenotfound.css'
-
 export default function PageNotFound() {
     return (
         <div>
