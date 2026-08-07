@@ -7,6 +7,8 @@ import InterviewPage from './pages/Interview.jsx'
 import LoginPage from './pages/Login.jsx'
 import RegisterPage from './pages/Register.jsx'
 import ResultsPage from './pages/Results.jsx'
+import FooterPage from './components/Footer.jsx'
+import NavbarPage from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {path: "/", element: <LandingPage />},
@@ -17,12 +19,19 @@ const router = createBrowserRouter([
   {path: "/login", element: <LoginPage />},
   {path: "/register", element: <RegisterPage />},
   {path: "/results", element: <ResultsPage />},
+  {path: "/footer", element: <FooterPage />},
+  {path: "/navbar", element: <NavbarPage />},
 ]);
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <div className='min-h-screen flex flex-col'>
+        <main className='flex-grow'>
+          <RouterProvider router={router} />
+        </main>
+        <FooterPage />
+      </div>
     </>
   )
 }
