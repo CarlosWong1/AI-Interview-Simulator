@@ -5,12 +5,12 @@ export default function LandingPage() {
     return (
         <>
             <nav className='flex bg-yellow-400 block px-10 py-3 items-center justify-between border-b-3 border-amber-400'>
-                <a href="#">
+                <Link to="/">
                     <span className='font-bold text-xl'>PrepFlow</span>
-                </a>
+                </Link>
     
                 <div>
-                    <a href="#" className="flex justify-center w-22 bg-white text-black font-semibold px-2 py-1 rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors duration-200">Log In</a>
+                    <Link to="/login" className="flex justify-center w-22 bg-white text-black font-semibold px-2 py-1 rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors duration-200">Log In</Link>
                 </div>
             </nav>
             

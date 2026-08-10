@@ -4,4 +4,4 @@ export default function DashboardPage() {
             <h1>DASHBOARD PAGE</h1>
         </>
     );
-}
+};
