@@ -26,3 +26,27 @@ body {
 @utility flex-center {
   @apply flex items-center justify-center;
 }
+
+/* Navbar hover underline effect */
+.nav {
+  position: relative;
+}
+
+.nav::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: rgb(0 0 0);
+  transition: width 0.3s ease;
+}
+
+.nav:hover::after {
+  width: 100%;
+}
+
+.nav.active::after {
+  width: 100%;
+}

@@ -10,7 +10,9 @@ export default function LandingPage() {
                 </Link>
     
                 <div>
-                    <Link to="/login" className="flex justify-center w-22 bg-white text-black font-semibold px-2 py-1 rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors duration-200">Log In</Link>
+                    <Link to="/login">
+                        <span className="flex justify-center w-22 bg-white text-black font-semibold px-2 py-1 rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors duration-200">Log In</span>
+                    </Link>
                 </div>
             </nav>
             

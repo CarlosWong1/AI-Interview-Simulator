@@ -9,13 +9,15 @@ import RegisterPage from './pages/Register.jsx'
 import ResultsPage from './pages/Results.jsx'
 import AuthLayout from './layouts/AuthLayout.jsx'
 import PublicLayout from './layouts/PublicLayout.jsx'
+import AppLayout from './layouts/AppLayout.jsx'
+import Navbar from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {path: "*", element: <PageNotFound />},
-  {path: "/dashboard", element: <DashboardPage />},
   {path: "/history", element: <HistoryPage />},
   {path: "/interview", element: <InterviewPage />},
   {path: "/results", element: <ResultsPage />},
+  {path: "/navbar", element: <Navbar />},
   {element: <AuthLayout />,
     children: [
       {path: "/register", element: <RegisterPage />},
@@ -25,6 +27,11 @@ const router = createBrowserRouter([
   {element: <PublicLayout />,
     children: [
       {path: "/", element: <LandingPage />}
+    ]
+  },
+  {element: <AppLayout />,
+    children: [
+      {path: "/dashboard", element: <DashboardPage />}
     ]
   },
 ]);

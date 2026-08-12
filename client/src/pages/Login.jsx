@@ -10,7 +10,9 @@ export default function LoginPage() {
                     <input type="email" name="email" id="email" placeholder="Email Address" className="bg-white/75 py-2 w-full rounded-2xl pl-5"/>
                     <input type="password" name="password" id="password" placeholder="Password" className="bg-white/75 py-2 w-full rounded-2xl pl-5"/>
                 </div>
-                <button className="bg-neutral-900 text-neutral-100 font-semibold text-1xl mt-5 w-full py-2 rounded-2xl cursor-pointer hover:bg-white/90 hover:text-black hover:ring-1">Log In</button>
+                <Link to="/dashboard">
+                    <button className="bg-neutral-900 text-neutral-100 font-semibold text-1xl mt-5 w-full py-2 rounded-2xl cursor-pointer hover:bg-white/90 hover:text-black hover:ring-1">Log In</button>
+                </Link>
                 <p className="text-sm text-neutral-700 mt-5 cursor-default">Don't have an account?<Link to="/register"><span className='text-blue-500 font-semibold'> Sign Up</span></Link></p>
             </div>
         </div>
