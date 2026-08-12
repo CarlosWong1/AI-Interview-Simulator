@@ -21,4 +21,4 @@ Built with React, Node.js, Express, PostgreSQL, and the OpenAI API.
 
 ## Status
 
-🚧 Currently in development.
+Currently in development.
