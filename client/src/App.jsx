@@ -14,24 +14,27 @@ import Navbar from './components/Navbar.jsx'
 
 const router = createBrowserRouter([
   {path: "*", element: <PageNotFound />},
-  {path: "/history", element: <HistoryPage />},
-  {path: "/interview", element: <InterviewPage />},
-  {path: "/results", element: <ResultsPage />},
   {path: "/navbar", element: <Navbar />},
+
   {element: <AuthLayout />,
     children: [
       {path: "/register", element: <RegisterPage />},
       {path: "/login", element: <LoginPage />}
     ]
   },
+
   {element: <PublicLayout />,
     children: [
       {path: "/", element: <LandingPage />}
     ]
   },
+  
   {element: <AppLayout />,
     children: [
-      {path: "/dashboard", element: <DashboardPage />}
+      {path: "/dashboard", element: <DashboardPage />},
+      {path: "/history", element: <HistoryPage />},
+      {path: "/interview", element: <InterviewPage />},
+      {path: "/results", element: <ResultsPage />},
     ]
   },
 ]);
