@@ -1,38 +1,22 @@
 import { useState } from "react";
 import CustomSelect from "../components/CustomSelect";
 import questions from "../fake-data/questions";
+import { Link } from "react-router-dom";
 
 export default function InterviewPage() {
   const STAGES = {
     SELECT_TOPIC: "selectTopic",
     INTRODUCTION: "introduction",
     INTERVIEW: "interview",
-    FINISHED: "finished",
   };
 
   const [selectedTopic, setSelectedTopic] = useState("");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [messages, setMessages] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
+  const [interviewComplete, setInterviewComplete] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const [stage, setStage] = useState(STAGES.SELECT_TOPIC);
-
-  const introductionMessages = [
-    {
-      id: 1,
-      sender: "AI",
-      message: `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`,
-    },
-    {
-      id: 2,
-      sender: "AI",
-      message: "I will ask you 3 questions based on your selected topic.",
-    },
-    {
-      id: 3,
-      sender: "AI",
-      message: "Once you are ready just click on the start below.",
-    },
-  ];
 
   const addMessage = (sender, message) => {
     setMessages((prevMessage) => [
@@ -41,21 +25,32 @@ export default function InterviewPage() {
     ]);
   };
 
-  const handleTopicSelection = () => {
-    if (selectedTopic) {
-      setStage(STAGES.INTRODUCTION);
-    }
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const handleTopicSelection = async () => {
+    if (!selectedTopic) return;
+
+    setStage(STAGES.INTRODUCTION);
+
+    await delay(1000)
+    addMessage("AI", `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`);
+    await delay(2000)
+    addMessage("AI", "I will ask you 3 questions based on your selected topic.");
+    await delay(2000)
+    addMessage("AI", "Once you are ready just click on the start below.");
   };
 
-  const handleStartInterview = () => {
+  const handleStartInterview = async () => {
     setStage(STAGES.INTERVIEW);
 
+    await delay(1000)
     addMessage("AI", "Great. Let's Begin");
+    await delay(2000)
     addMessage("AI", questions[selectedTopic][currentQuestion].question);
   };
 
-  const handleSend = (e) => {
-    e.preventDefault();
+  const handleSend = async (e) => {
+    e?.preventDefault();
 
     if (userAnswer.trim() === "") return;
 
@@ -67,23 +62,29 @@ export default function InterviewPage() {
       const nextQuestion = currentQuestion + 1;
       setCurrentQuestion(nextQuestion);
 
+      setUserAnswer("");
+      await delay(2000)
       addMessage("AI", questions[selectedTopic][nextQuestion].question);
-
-      setUserAnswer("");
+      
     } else {
-      addMessage("AI", "Thank you for completing the interview");
-
       setUserAnswer("");
-
-      setTimeout(() => {
-        handleFinishInterview();
-      }, 2000);
+      await delay(2000)
+      addMessage("AI", "Thank you for completing the interview");
+      await delay(2000);
+      setInterviewComplete(true);
+      await delay(2000);
+      addMessage("AI", "I am now analyzing your your response...");
+      await delay(4000)
+      addMessage("AI", "Analysis complete. Click on the results to see your result");
+      await delay(1000);
+      setShowResult(true);
     }
   };
 
-  const handleFinishInterview = () => {
-    setStage(STAGES.FINISHED);
-  };
+  const buttonColorTrue = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-yellow-300 hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8";
+  const buttonColorFalse = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-default rounded border-2 border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8 opacity-75";
+  const inputColorFalse = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white opacity-75";
+  const inputColorTrue = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white"
 
   //* SELECT TOPIC VIEW
   if (stage === STAGES.SELECT_TOPIC) {
@@ -101,7 +102,7 @@ export default function InterviewPage() {
           <button
             onClick={handleTopicSelection}
             disabled={!selectedTopic}
-            className={`mt-4 bg-yellow-400 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 cursor-not-allowed hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""}`}
+            className={`mt-4 bg-yellow-400 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""}`}
           >
             Start Interview
           </button>
@@ -110,7 +111,7 @@ export default function InterviewPage() {
     );
   }
 
-  //* INTERVIEW PAGE
+  //* INTERVIEW INTRODUCTION PAGE
   if (stage === STAGES.INTRODUCTION) {
     return (
       <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
@@ -120,21 +121,23 @@ export default function InterviewPage() {
           </h1>
         </header>
         <article className="overflow-y-auto flex-1 p-4">
-          {introductionMessages.map((text) => (
+          {messages.map((text) => (
             <p key={text.id}>
               {text.sender}: {text.message}
             </p>
           ))}
-          <p className="">
+          {messages.length === 3 && (
+              <p>
             AI:
             <span
-              className="font-semibold text-sky-500 hover:cursor-pointer"
+              className="font-semibold text-sky-500 cursor-pointer"
               onClick={handleStartInterview}
             >
               {" "}
               START INTERVIEW
             </span>
           </p>
+          )}
         </article>
         <form className="flex w-full p-4 bg-slate-900">
           <textarea
@@ -147,11 +150,11 @@ export default function InterviewPage() {
               e.target.style.height = "auto";
               e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
             }}
-            className="border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white opacity-75 hover:cursor-not-allowed"
+            className={inputColorFalse}
           ></textarea>
           <button
             disabled
-            className="bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8 hover:cursor-not-allowed opacity-75"
+            className={buttonColorFalse}
           >
             Send
           </button>
@@ -176,11 +179,27 @@ export default function InterviewPage() {
               </p>
             );
           })}
+          {showResult && (
+            <p>
+              AI: 
+              <Link to="/results">
+                <span className="font-semibold text-sky-500 cursor-pointer"> RESULTS</span>
+              </Link>
+            </p>
+          )}
         </article>
         <form onSubmit={handleSend} className="flex w-full p-4 bg-slate-900">
           <textarea
+            disabled={interviewComplete}
             onChange={(e) => {
               setUserAnswer(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSend(e);
+                setUserAnswer("");
+              }
             }}
             value={userAnswer}
             placeholder="Type here"
@@ -191,52 +210,12 @@ export default function InterviewPage() {
               e.target.style.height = "auto";
               e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
             }}
-            className="border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white"
+            className={interviewComplete ? inputColorFalse : inputColorTrue}
           ></textarea>
           <button
+            disabled={interviewComplete}
             type="submit"
-            className="bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-yellow-300 hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8"
-          >
-            Send
-          </button>
-        </form>
-      </div>
-    );
-  }
-
-  if (stage === STAGES.FINISHED) {
-    return (
-      <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
-        <header className="py-2 px-5 flex bg-slate-900 w-full">
-          <h1 className="text-md font-semibold text-white">
-            {selectedTopic.toUpperCase()} Interview
-          </h1>
-        </header>
-        <article className="overflow-y-auto flex-1 p-4">
-          {messages.map((text) => {
-            return (
-              <p key={text.id}>
-                {text.sender}: {text.message}
-              </p>
-            );
-          })}
-        </article>
-        <form onSubmit={handleSend} className="flex w-full p-4 bg-slate-900">
-          <textarea
-            disabled
-            placeholder="Type here"
-            id="answer"
-            rows="1"
-            style={{ maxHeight: "100px", overflowY: "auto" }}
-            onInput={(e) => {
-              e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
-            }}
-            className="border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white opacity-75 hover:cursor-not-allowed"
-          ></textarea>
-          <button
-            disabled
-            className="bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8 hover:cursor-not-allowed opacity-75"
+            className={interviewComplete ? buttonColorFalse : buttonColorTrue}
           >
             Send
           </button>

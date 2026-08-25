@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 
-export { Link } from 'react-router-dom'
-
 export default function DashboardPage() {
     return (
         <article className="flex-center flex-col mt-20 md:mt-40 w-full max-w-4xl mx-auto px-4">
