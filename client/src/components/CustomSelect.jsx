@@ -38,7 +38,7 @@ export default function CustomSelect({ value, onChange }) {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-64 min-w-[200px] bg-yellow-400 text-slate-900 rounded border-2 border-black
+                className="w-64 min-w-[200px] bg-yellow-300 text-slate-900 rounded border-2 border-black
                          px-4 py-3 font-semibold text-lg cursor-pointer
                          hover:bg-black hover:text-white hover:border-black
                          focus:outline-none focus:ring-2 focus:ring-sky-300
@@ -77,9 +77,9 @@ export default function CustomSelect({ value, onChange }) {
                             className={`px-4 py-3 cursor-pointer transition-all duration-200
                                        ${topic.disabled
                                            ? 'text-gray-400 cursor-not-allowed'
-                                           : 'hover:bg-yellow-400 hover:text-slate-900 hover:font-semibold'
+                                           : 'hover:bg-yellow-300 hover:text-slate-900 hover:font-semibold'
                                        }
-                                       ${value === topic.value ? 'bg-yellow-400 font-semibold' : ''}
+                                       ${value === topic.value ? 'bg-yellow-300 font-semibold' : ''}
                                        ${!topic.disabled ? 'active:scale-[0.98]' : ''}`}
                             role="option"
                             aria-selected={value === topic.value}

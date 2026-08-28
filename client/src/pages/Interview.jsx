@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CustomSelect from "../components/CustomSelect";
 import questions from "../fake-data/questions";
 import { Link } from "react-router-dom";
@@ -17,6 +17,15 @@ export default function InterviewPage() {
   const [interviewComplete, setInterviewComplete] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [stage, setStage] = useState(STAGES.SELECT_TOPIC);
+
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      const container = chatRef.current;
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages, showResult])
 
   const addMessage = (sender, message) => {
     setMessages((prevMessage) => [
@@ -84,7 +93,35 @@ export default function InterviewPage() {
   const buttonColorTrue = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-yellow-300 hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8";
   const buttonColorFalse = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-default rounded border-2 border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8 opacity-75";
   const inputColorFalse = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white opacity-75";
-  const inputColorTrue = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white"
+  const inputColorTrue = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white";
+
+  const displayMessage = (message) => {
+    return (
+      <>
+        {message.map((text) => {
+          return (
+            <div key={text.id} className={`w-full flex ${text.sender === "AI" ? "justify-start" : "justify-end"}`}>
+              <div className={`${text.sender === "AI" ? "bg-slate-100" : "bg-sky-100"} py-2 px-4 mb-2 inline-block rounded max-w-3/4`}>
+                <p className="font-semibold">{text.sender}</p>
+                <p className="break-all">{text.message}</p>
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
+  }
+
+  const displayActionButton = (action) => {
+    return (
+      <div className="w-full flex">
+        <div className="bg-slate-100 py-2 px-4 mb-2 inline-block rounded max-w-3/4">
+          <p className="font-semibold">AI</p>
+          <p className="font-semibold text-sky-500 cursor-pointer">{action}</p>
+        </div>
+      </div>
+    );
+  }
 
   //* SELECT TOPIC VIEW
   if (stage === STAGES.SELECT_TOPIC) {
@@ -102,7 +139,7 @@ export default function InterviewPage() {
           <button
             onClick={handleTopicSelection}
             disabled={!selectedTopic}
-            className={`mt-4 bg-yellow-400 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""}`}
+            className={`mt-4 bg-yellow-300 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""}`}
           >
             Start Interview
           </button>
@@ -121,22 +158,9 @@ export default function InterviewPage() {
           </h1>
         </header>
         <article className="overflow-y-auto flex-1 p-4">
-          {messages.map((text) => (
-            <p key={text.id}>
-              {text.sender}: {text.message}
-            </p>
-          ))}
+          {displayMessage(messages)}
           {messages.length === 3 && (
-              <p>
-            AI:
-            <span
-              className="font-semibold text-sky-500 cursor-pointer"
-              onClick={handleStartInterview}
-            >
-              {" "}
-              START INTERVIEW
-            </span>
-          </p>
+            displayActionButton(<span onClick={handleStartInterview}>START INTERVIEW</span>)
           )}
         </article>
         <form className="flex w-full p-4 bg-slate-900">
@@ -163,6 +187,7 @@ export default function InterviewPage() {
     );
   }
 
+  //* INTERVIEW PAGE
   if (stage === STAGES.INTERVIEW) {
     return (
       <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
@@ -171,21 +196,14 @@ export default function InterviewPage() {
             {selectedTopic.toUpperCase()} Interview
           </h1>
         </header>
-        <article className="overflow-y-auto flex-1 p-4">
-          {messages.map((text) => {
-            return (
-              <p key={text.id}>
-                {text.sender}: {text.message}
-              </p>
-            );
-          })}
+        <article className="overflow-y-auto flex-1 p-4" ref={chatRef}>
+          {displayMessage(messages)}
           {showResult && (
-            <p>
-              AI: 
+            displayActionButton(
               <Link to="/results">
-                <span className="font-semibold text-sky-500 cursor-pointer"> RESULTS</span>
+                RESULTS
               </Link>
-            </p>
+            )
           )}
         </article>
         <form onSubmit={handleSend} className="flex w-full p-4 bg-slate-900">
