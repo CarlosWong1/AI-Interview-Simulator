@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import CustomSelect from "../components/CustomSelect";
 import questions from "../fake-data/questions";
 import { Link } from "react-router-dom";
+import { Send } from "lucide-react";
 
 export default function InterviewPage() {
   const STAGES = {
@@ -90,10 +91,11 @@ export default function InterviewPage() {
     }
   };
 
-  const buttonColorTrue = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-yellow-300 hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8";
-  const buttonColorFalse = "bg-yellow-400 px-4 py-2 text-slate-900 rounded cursor-default rounded border-2 border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out font-semibold md:text-2xl md:py-4 md:px-8 opacity-75";
-  const inputColorFalse = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white opacity-75";
-  const inputColorTrue = "border-2 px-4 py-2 rounded-2xl resize-none grow mr-2 border-white bg-white";
+  const inputContainer = "flex items-center rounded-full bg-white border-2 border-gray-200 px-3 py-2 w-full md:w-3/4"
+  const textareaEnabled = "grow resize-none bg-transparent outline-none p-2 md:text-lg placeholder:text-gray-500";
+  const textareaDisabled = "grow resize-none bg-transparent outline-none p-2 md:text-lg opacity-60 placeholder:text-gray-500";
+  const sendButton = "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 flex items-center justify-center hover:bg-yellow-300 transition-colors cursor-pointer";
+  const sendButtonDisabled = "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 opacity-50 flex items-center justify-center cursor-not-allowed"
 
   const displayMessage = (message) => {
     return (
@@ -102,8 +104,8 @@ export default function InterviewPage() {
           return (
             <div key={text.id} className={`w-full flex ${text.sender === "AI" ? "justify-start" : "justify-end"}`}>
               <div className={`${text.sender === "AI" ? "bg-slate-100" : "bg-sky-100"} py-2 px-4 mb-2 inline-block rounded max-w-3/4`}>
-                <p className="font-semibold">{text.sender}</p>
-                <p className="break-all">{text.message}</p>
+                <p className="font-semibold md:text-xl">{text.sender}</p>
+                <p className="break-all md:text-xl">{text.message}</p>
               </div>
             </div>
           );
@@ -116,8 +118,8 @@ export default function InterviewPage() {
     return (
       <div className="w-full flex">
         <div className="bg-slate-100 py-2 px-4 mb-2 inline-block rounded max-w-3/4">
-          <p className="font-semibold">AI</p>
-          <p className="font-semibold text-sky-500 cursor-pointer">{action}</p>
+          <p className="font-semibold text-medium md:text-xl">AI</p>
+          <p className="font-semibold text-sky-500 cursor-pointer md:text-xl">{action}</p>
         </div>
       </div>
     );
@@ -131,7 +133,7 @@ export default function InterviewPage() {
           Start a New Interview
         </h1>
         <div className="flex-col flex items-center gap-6 w-full max-w-md">
-          <label htmlFor="topic" className="text-xl pb-2 font-semibold">
+          <label htmlFor="topic" className="text-xl pb-2 font-semibold md:text-3xl">
             Select a topic
           </label>
           <CustomSelect value={selectedTopic} onChange={setSelectedTopic} />
@@ -139,7 +141,7 @@ export default function InterviewPage() {
           <button
             onClick={handleTopicSelection}
             disabled={!selectedTopic}
-            className={`mt-4 bg-yellow-300 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""}`}
+            className={`mt-4 bg-yellow-300 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""} md:text-3xl`}
           >
             Start Interview
           </button>
@@ -151,37 +153,39 @@ export default function InterviewPage() {
   //* INTERVIEW INTRODUCTION PAGE
   if (stage === STAGES.INTRODUCTION) {
     return (
-      <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+      <div className="flex flex-col h-full mx-auto w-full">
         <header className="py-2 px-5 flex bg-slate-900 w-full">
-          <h1 className="text-md font-semibold text-white">
+          <h1 className="font-semibold text-white md:text-2xl">
             {selectedTopic.toUpperCase()} Interview
           </h1>
         </header>
-        <article className="overflow-y-auto flex-1 p-4">
+        <article className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5">
           {displayMessage(messages)}
           {messages.length === 3 && (
             displayActionButton(<span onClick={handleStartInterview}>START INTERVIEW</span>)
           )}
         </article>
-        <form className="flex w-full p-4 bg-slate-900">
-          <textarea
-            disabled
-            placeholder="Type here"
-            id="answer"
-            rows="1"
-            style={{ maxHeight: "100px", overflowY: "auto" }}
-            onInput={(e) => {
-              e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
-            }}
-            className={inputColorFalse}
-          ></textarea>
-          <button
-            disabled
-            className={buttonColorFalse}
-          >
-            Send
-          </button>
+        <form className="p-4 bg-slate-900 flex justify-center">
+          <div className={inputContainer}>
+            <textarea
+              disabled
+              placeholder="Type here"
+              id="answer"
+              rows="1"
+              style={{ maxHeight: "100px", overflowY: "auto" }}
+              onInput={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
+              }}
+              className={textareaDisabled}
+            ></textarea>
+            <button
+              disabled
+              className={sendButtonDisabled}
+            >
+              <Send strokeWidth={2} size={20}/>
+            </button>
+          </div>
         </form>
       </div>
     );
@@ -190,13 +194,13 @@ export default function InterviewPage() {
   //* INTERVIEW PAGE
   if (stage === STAGES.INTERVIEW) {
     return (
-      <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+      <div className="flex flex-col h-full mx-auto w-full">
         <header className="py-2 px-5 flex bg-slate-900 w-full">
-          <h1 className="text-md font-semibold text-white">
+          <h1 className="font-semibold text-white md:text-2xl">
             {selectedTopic.toUpperCase()} Interview
           </h1>
         </header>
-        <article className="overflow-y-auto flex-1 p-4" ref={chatRef}>
+        <article className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5" ref={chatRef}>
           {displayMessage(messages)}
           {showResult && (
             displayActionButton(
@@ -206,39 +210,42 @@ export default function InterviewPage() {
             )
           )}
         </article>
-        <form onSubmit={handleSend} className="flex w-full p-4 bg-slate-900">
-          <textarea
-            disabled={interviewComplete}
-            onChange={(e) => {
-              setUserAnswer(e.target.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSend(e);
-                setUserAnswer("");
-              }
-            }}
-            value={userAnswer}
-            placeholder="Type here"
-            id="answer"
-            rows="1"
-            style={{ maxHeight: "100px", overflowY: "auto" }}
-            onInput={(e) => {
-              e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
-            }}
-            className={interviewComplete ? inputColorFalse : inputColorTrue}
-          ></textarea>
-          <button
-            disabled={interviewComplete}
-            type="submit"
-            className={interviewComplete ? buttonColorFalse : buttonColorTrue}
-          >
-            Send
-          </button>
+        <form onSubmit={handleSend} className="p-4 bg-slate-900 flex justify-center">
+          <div className={inputContainer}>
+            <textarea
+              disabled={interviewComplete}
+              onChange={(e) => {
+                setUserAnswer(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend(e);
+                  setUserAnswer("");
+                }
+              }}
+              value={userAnswer}
+              placeholder="Type here"
+              id="answer"
+              rows="1"
+              style={{ maxHeight: "100px", overflowY: "auto" }}
+              onInput={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
+              }}
+              className={interviewComplete ? textareaDisabled : textareaEnabled}
+            ></textarea>
+            <button
+              disabled={interviewComplete}
+              type="submit"
+              className={interviewComplete ? sendButtonDisabled : sendButton}
+            >
+              <Send strokeWidth={2} size={20} />
+            </button>
+          </div>
         </form>
       </div>
     );
   }
 }
+

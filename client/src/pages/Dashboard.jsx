@@ -6,7 +6,7 @@ export default function DashboardPage() {
             <h1 className='font-bold text-4xl mb-1 md:text-5xl text-center'>WELCOME TO PREPFLOW</h1>
             <p className='font-semibold text-xl md:text-2xl text-center'>Ready to practice your first AI interview?</p>
             <p className='font-semibold text-2xl mt-15 mb-3 md:text-3xl text-center'>Here's how it works:</p>
-            <div className='bg-yellow-300 p-4 rounded-lg p-10 border-1 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)] max-w-2xl'>
+            <div className='bg-yellow-300 p-4 rounded-lg p-10 border-1'>
                 <ul className='flex flex-col gap-3 flex-center'>
                     <li className='text-xl md:text-2xl'>1. Choose a topic.</li>
                     <li className='text-xl md:text-2xl'>2. Answer AI-generated questions.</li>

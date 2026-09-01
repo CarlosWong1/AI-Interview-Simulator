@@ -38,19 +38,20 @@ export default function CustomSelect({ value, onChange }) {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-64 min-w-[200px] bg-yellow-300 text-slate-900 rounded border-2 border-black
+                className="bg-yellow-300 text-slate-900 rounded border-2 border-black
                          px-4 py-3 font-semibold text-lg cursor-pointer
                          hover:bg-black hover:text-white hover:border-black
                          focus:outline-none focus:ring-2 focus:ring-sky-300
                          transition-all duration-300 ease-in-out
                          flex items-center justify-between gap-2
-                         hover:scale-[1.02] active:scale-[0.98]"
+                         hover:scale-[1.02] active:scale-[0.98]
+                         md:text-3xl md:px-7 md:py-4"
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
             >
                 <span className="truncate">{selectedTopic?.label || 'Choose a topic'}</span>
                 <svg
-                    className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 md:w-7 md:h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -62,7 +63,7 @@ export default function CustomSelect({ value, onChange }) {
             {isOpen && (
                 <ul
                     className="absolute z-50 w-full mt-2 bg-white rounded-lg border-2 border-black shadow-lg
-                               overflow-hidden max-h-60 overflow-y-auto"
+                               overflow-hidden max-h-60 md:max-h-80 overflow-y-auto"
                     role="listbox"
                 >
                     {topics.map((topic) => (
@@ -74,7 +75,7 @@ export default function CustomSelect({ value, onChange }) {
                                     setIsOpen(false);
                                 }
                             }}
-                            className={`px-4 py-3 cursor-pointer transition-all duration-200
+                            className={`px-4 py-3 md:px-6 md:py-4 md:text-2xl cursor-pointer transition-all duration-200
                                        ${topic.disabled
                                            ? 'text-gray-400 cursor-not-allowed'
                                            : 'hover:bg-yellow-300 hover:text-slate-900 hover:font-semibold'
