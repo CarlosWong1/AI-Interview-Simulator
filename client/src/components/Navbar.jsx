@@ -5,6 +5,14 @@ export default function Navbar() {
 
     const isActive = (path) => location.pathname === path ? 'active' : '';
 
+    const navigationLinks = [
+      {name: "Home", path: "/dashboard"},
+      {name: "Interview", path: "/interview"},
+      {name: "Results", path: "/results"},
+      {name: "History", path: "/history"},
+      {name: "Account", path: "/account"},
+    ]
+
     return (
         <>
             <nav className='flex bg-yellow-400 block px-10 py-3 items-center justify-between border-b-3 border-amber-400 md:py-5'>
@@ -13,18 +21,11 @@ export default function Navbar() {
                 </Link>
 
                 <div className='flex gap-5 md:gap-8'>
-                    <Link to="/dashboard">
-                        <span className={`nav font-semibold text-neutral-800 md:text-xl ${isActive('/dashboard')}`}>Home</span>
-                    </Link>
-                    <Link to="/interview">
-                        <span className={`nav font-semibold text-neutral-800 md:text-xl ${isActive('/interview')}`}>Interview</span>
-                    </Link>
-                    <Link to="/results">
-                        <span className={`nav font-semibold text-neutral-800 md:text-xl ${isActive('/results')}`}>Results</span>
-                    </Link>
-                    <Link to="/history">
-                        <span className={`nav font-semibold text-neutral-800 md:text-xl ${isActive('/history')}`}>History</span>
-                    </Link>
+                    {navigationLinks.map((link) => (
+                      <Link key={link.path} to={link.path}>
+                        <span className={`nav font-semibold text-neutral-800 md:text-xl ${isActive(link.path)}`}>{link.name}</span>
+                      </Link>
+                    ))}
                 </div>
             </nav>
         </>

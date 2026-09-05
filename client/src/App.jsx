@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import PageNotFound from './pages/PageNotFound.jsx'
 import LandingPage from './pages/Landing.jsx'
 import DashboardPage from './pages/Dashboard.jsx'
@@ -7,10 +8,14 @@ import InterviewPage from './pages/Interview.jsx'
 import LoginPage from './pages/Login.jsx'
 import RegisterPage from './pages/Register.jsx'
 import ResultsPage from './pages/Results.jsx'
+import AccountPage from './pages/Account.jsx'
+
 import AuthLayout from './layouts/AuthLayout.jsx'
 import PublicLayout from './layouts/PublicLayout.jsx'
 import AppLayout from './layouts/AppLayout.jsx'
+
 import Navbar from './components/Navbar.jsx'
+import Wrapper from './components/Wrapper.jsx'
 
 const router = createBrowserRouter([
   {path: "*", element: <PageNotFound />},
@@ -29,12 +34,16 @@ const router = createBrowserRouter([
     ]
   },
   
-  {element: <AppLayout />,
+  {element:
+    <Wrapper>
+      <AppLayout />
+    </Wrapper>,
     children: [
       {path: "/dashboard", element: <DashboardPage />},
       {path: "/history", element: <HistoryPage />},
       {path: "/interview", element: <InterviewPage />},
       {path: "/results", element: <ResultsPage />},
+      {path: "/account", element: <AccountPage />}
     ]
   },
 ]);
