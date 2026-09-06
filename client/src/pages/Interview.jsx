@@ -3,6 +3,7 @@ import CustomSelect from "../components/CustomSelect";
 import questions from "../fake-data/questions";
 import { Link } from "react-router-dom";
 import { Send } from "lucide-react";
+import { supabase } from "../lib/supabase.js";
 
 export default function InterviewPage() {
   const STAGES = {
@@ -17,6 +18,8 @@ export default function InterviewPage() {
   const [userAnswer, setUserAnswer] = useState("");
   const [interviewComplete, setInterviewComplete] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [interviewId, setInterviewId] = useState(null);
+  const [user, setUser] = useState(null);
   const [stage, setStage] = useState(STAGES.SELECT_TOPIC);
 
   const chatRef = useRef(null);
@@ -26,13 +29,48 @@ export default function InterviewPage() {
       const container = chatRef.current;
       container.scrollTop = container.scrollHeight;
     }
-  }, [messages, showResult])
+  }, [messages, showResult]);
 
-  const addMessage = (sender, message) => {
-    setMessages((prevMessage) => [
-      ...prevMessage,
-      { id: crypto.randomUUID(), sender: sender, message: message },
-    ]);
+  useEffect(() => {
+    const loadUser = async () => {
+      const {data: {user}} = await supabase.auth.getUser();
+      setUser(user);
+    }
+    loadUser();
+  }, [])
+
+  const addLocalMessage = (sender, message) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        sender: sender,
+        message: message
+      }
+    ])
+  }
+
+  const addMessage = async (sender, message) => {
+    addLocalMessage(sender, message);
+
+    if (!user || !interviewId) {
+      console.error("Missing user or interview.");
+      return;
+    }
+
+    const {error: messageError} = await supabase
+      .from("messages")
+      .insert({
+        interview_id: interviewId,
+        user_id: user.id,
+        role: sender,
+        content: message
+      });
+
+    if (messageError) {
+      console.error(messageError.message);
+      return;
+    }
   };
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -40,23 +78,46 @@ export default function InterviewPage() {
   const handleTopicSelection = async () => {
     if (!selectedTopic) return;
 
+    if (!user) {
+      console.log("User not authenticate");
+      return;
+    }
+    console.log("User:", user)
+    const {data, error: interviewError} = await supabase
+      .from("interviews")
+      .insert({
+        user_id: user.id, 
+        topic: selectedTopic
+      })
+      .select()
+      .single();
+
+    console.log("Interview:", data);
+    console.log("Error:", interviewError);
+    
+    if (interviewError) {
+      console.error(interviewError.message);
+      return;
+    }
+    const newInterviewId = data.id;
+    setInterviewId(newInterviewId);
     setStage(STAGES.INTRODUCTION);
 
     await delay(1000)
-    addMessage("AI", `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`);
+    addLocalMessage("AI", `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`);
     await delay(2000)
-    addMessage("AI", "I will ask you 3 questions based on your selected topic.");
+    addLocalMessage("AI", "I will ask you 3 questions based on your selected topic.");
     await delay(2000)
-    addMessage("AI", "Once you are ready just click on the start below.");
+    addLocalMessage("AI", "Once you are ready just click on the start below.");
   };
 
   const handleStartInterview = async () => {
     setStage(STAGES.INTERVIEW);
 
     await delay(1000)
-    addMessage("AI", "Great. Let's Begin");
+    await addMessage("AI", "Great. Let's Begin");
     await delay(2000)
-    addMessage("AI", questions[selectedTopic][currentQuestion].question);
+    await addMessage("AI", questions[selectedTopic][currentQuestion].question);
   };
 
   const handleSend = async (e) => {
@@ -64,7 +125,7 @@ export default function InterviewPage() {
 
     if (userAnswer.trim() === "") return;
 
-    addMessage("User", userAnswer);
+    await addMessage("User", userAnswer);
 
     const hasNext = currentQuestion + 1 < questions[selectedTopic].length;
 
@@ -74,18 +135,18 @@ export default function InterviewPage() {
 
       setUserAnswer("");
       await delay(2000)
-      addMessage("AI", questions[selectedTopic][nextQuestion].question);
+      await addMessage("AI", questions[selectedTopic][nextQuestion].question);
       
     } else {
       setUserAnswer("");
       await delay(2000)
-      addMessage("AI", "Thank you for completing the interview");
+      await addMessage("AI", "Thank you for completing the interview");
       await delay(2000);
       setInterviewComplete(true);
       await delay(2000);
-      addMessage("AI", "I am now analyzing your your response...");
+      await addMessage("AI", "I am now analyzing your your response...");
       await delay(4000)
-      addMessage("AI", "Analysis complete. Click on the results to see your result");
+      await addMessage("AI", "Analysis complete. Click on the results to see your result");
       await delay(1000);
       setShowResult(true);
     }
@@ -137,7 +198,6 @@ export default function InterviewPage() {
             Select a topic
           </label>
           <CustomSelect value={selectedTopic} onChange={setSelectedTopic} />
-          {console.log(selectedTopic)}
           <button
             onClick={handleTopicSelection}
             disabled={!selectedTopic}
