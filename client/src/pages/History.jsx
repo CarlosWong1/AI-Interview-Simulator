@@ -1,7 +1,44 @@
 import { Search } from "lucide-react";
-import interviews from "../fake-data/interview";
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
+import { useNavigate } from "react-router-dom";
 
 export default function HistoryPage() {
+  const [interview, setInterview] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getInterviews = async () => {
+      const {data: {user}} = await supabase.auth.getUser();
+
+      const {data, error} = await supabase
+        .from("interviews")
+        .select("*")
+        .eq("user_id", user.id)
+
+      if (error) {
+        if (!data) {
+          navigate("/interview");
+          return;
+        }
+        console.error(error.message);
+        return;
+      }
+      setInterview(data);
+    }
+    getInterviews();
+  }, []);
+
+  const completedInterviews = interview.filter(interview => 
+    interview.feedback !== null
+  );
+
+  const filteredInterviews  = completedInterviews.filter(interview =>
+    interview.topic.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col h-full mx-auto w-full md:w-3/4 px-5">
       <header className="my-4 md:my-8">
@@ -17,6 +54,8 @@ export default function HistoryPage() {
               type="text"
               placeholder="Search Interview"
               className="focus:outline-none"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
             />
           </form>
         </div>
@@ -32,14 +71,14 @@ export default function HistoryPage() {
                 </tr>
             </thead>
             <tbody>
-                {interviews.map((item) => {
+                {filteredInterviews.map((item) => {
                     return (
                         <tr key={item.id} className="bg-neutral-primary-soft border-default hover:bg-yellow-300">
-                            <td className="px-6 py-4 whitespace-nowrap text-center">{new Date(item.date).toLocaleDateString('en-GB')}</td>
-                            <td className="px-6 py-4 font-semibold md:px-8 md:py-5 text-center">{item.topic}</td>
-                            <td className="px-6 py-4 md:px-8 md:py-5 text-center">{item.score}%</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-center">{new Date(item.created_at).toLocaleDateString('en-GB')}</td>
+                            <td className="px-6 py-4 font-semibold md:px-8 md:py-5 text-center">{item.topic.toUpperCase()}</td>
+                            <td className="px-6 py-4 md:px-8 md:py-5 text-center">{item.feedback.overall_score}%</td>
                             <td className="px-6 py-4 md:px-8 md:py-5 text-center">
-                              <button className="font-semibold text-sky-600 hover:underline cursor-pointer">View Result</button>
+                              <button onClick={() => navigate(`/results/${item.id}`)} className="font-semibold text-sky-600 hover:underline cursor-pointer">View Result</button>
                             </td>
                         </tr>
                     );

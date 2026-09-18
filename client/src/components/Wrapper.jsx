@@ -26,7 +26,7 @@ export default function Wrapper({children}) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>
+    return <h1 className="text-3xl font-semibold text-center mt-20">Loading...</h1>;
   }
 
   if (session) {

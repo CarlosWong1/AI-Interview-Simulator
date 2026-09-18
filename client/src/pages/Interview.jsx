@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import CustomSelect from "../components/CustomSelect";
-import questions from "../fake-data/questions";
-import { Link } from "react-router-dom";
-import { Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Send, Loader } from "lucide-react";
 import { supabase } from "../lib/supabase.js";
 
 export default function InterviewPage() {
@@ -20,9 +19,13 @@ export default function InterviewPage() {
   const [showResult, setShowResult] = useState(false);
   const [interviewId, setInterviewId] = useState(null);
   const [user, setUser] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [stage, setStage] = useState(STAGES.SELECT_TOPIC);
+  const [loading, setLoading] = useState(false);
+  const [responses, setResponses] = useState([]);
 
   const chatRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (chatRef.current) {
@@ -99,6 +102,7 @@ export default function InterviewPage() {
       console.error(interviewError.message);
       return;
     }
+
     const newInterviewId = data.id;
     setInterviewId(newInterviewId);
     setStage(STAGES.INTRODUCTION);
@@ -112,12 +116,39 @@ export default function InterviewPage() {
   };
 
   const handleStartInterview = async () => {
-    setStage(STAGES.INTERVIEW);
+    setLoading(true)
+    const url =`${import.meta.env.VITE_API_URL}/api/interview/start`;
+    const payload = {
+      topic: selectedTopic
+    }
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
 
-    await delay(1000)
-    await addMessage("AI", "Great. Let's Begin");
-    await delay(2000)
-    await addMessage("AI", questions[selectedTopic][currentQuestion].question);
+      if (!response.ok) {
+        throw new Error(`Failed to post: ${response.status}`)
+      }
+      const result = await response.json();
+
+      console.log(`Sucess:`, result.questions);
+
+      setQuestions(result.questions);
+      setLoading(false)
+      setStage(STAGES.INTERVIEW);
+
+      await delay(1000)
+      addLocalMessage("AI", "Great. Let's Begin");
+      await delay(2000)
+      await addMessage("AI", result.questions[0].question);
+    } catch (error) {
+      console.error(`Error sending data:`, error);
+      setLoading(false);
+    }
   };
 
   const handleSend = async (e) => {
@@ -127,7 +158,14 @@ export default function InterviewPage() {
 
     await addMessage("User", userAnswer);
 
-    const hasNext = currentQuestion + 1 < questions[selectedTopic].length;
+    const hasNext = currentQuestion + 1 < questions.length;
+
+    const currentResponse = {
+      question: questions[currentQuestion].question,
+      answer: userAnswer
+    };
+
+    setResponses(prev => [...prev, currentResponse])
 
     if (hasNext) {
       const nextQuestion = currentQuestion + 1;
@@ -135,22 +173,69 @@ export default function InterviewPage() {
 
       setUserAnswer("");
       await delay(2000)
-      await addMessage("AI", questions[selectedTopic][nextQuestion].question);
+      await addMessage("AI", questions[nextQuestion].question);
       
     } else {
       setUserAnswer("");
       await delay(2000)
-      await addMessage("AI", "Thank you for completing the interview");
+      addLocalMessage("AI", "Thank you for completing the interview");
       await delay(2000);
       setInterviewComplete(true);
       await delay(2000);
-      await addMessage("AI", "I am now analyzing your your response...");
-      await delay(4000)
-      await addMessage("AI", "Analysis complete. Click on the results to see your result");
-      await delay(1000);
-      setShowResult(true);
+      addLocalMessage("AI", "I am now analyzing your your response...");
+      
+      const allResponses = [...responses, currentResponse];
+      const url =`${import.meta.env.VITE_API_URL}/api/interview/evaluate`;
+
+      const payload = {
+        topic: selectedTopic,
+        responses: allResponses
+      }
+
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to post: ${response.status}`)
+        }
+        const result = await response.json();
+        console.log("Interview feedback: ", result);
+
+        const {data, error} = await supabase
+          .from("interviews")
+          .update({
+            feedback: result
+          })
+          .eq("id", interviewId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error(error.message);
+          return;
+        }
+
+        console.log(data)
+
+        addLocalMessage("AI", "Analysis complete. Click on the results to see your result");
+        await delay(1000);
+        setShowResult(true);
+
+      } catch (error) {
+        console.error(error.message)
+      }
     }
   };
+
+  const handleResultsClick = () => {
+    navigate(`/results/${interviewId}`)
+  }
 
   const inputContainer = "flex items-center rounded-full bg-white border-2 border-gray-200 px-3 py-2 w-full md:w-3/4"
   const textareaEnabled = "grow resize-none bg-transparent outline-none p-2 md:text-lg placeholder:text-gray-500";
@@ -175,12 +260,12 @@ export default function InterviewPage() {
     );
   }
 
-  const displayActionButton = (action) => {
+  const displayActionButton = (content) => {
     return (
       <div className="w-full flex">
         <div className="bg-slate-100 py-2 px-4 mb-2 inline-block rounded max-w-3/4">
           <p className="font-semibold text-medium md:text-xl">AI</p>
-          <p className="font-semibold text-sky-500 cursor-pointer md:text-xl">{action}</p>
+          <div className="font-semibold text-sky-500 cursor-pointer md:text-xl">{content}</div>
         </div>
       </div>
     );
@@ -222,7 +307,18 @@ export default function InterviewPage() {
         <article className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5">
           {displayMessage(messages)}
           {messages.length === 3 && (
-            displayActionButton(<span onClick={handleStartInterview}>START INTERVIEW</span>)
+            displayActionButton( 
+              loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader className="animate-spin w-5 h-5"/>
+                  <span>Generating interview...</span>
+                </div>
+              ) : (
+                <span onClick={handleStartInterview}>
+                  START INTERVIEW
+                </span>
+              )
+            )
           )}
         </article>
         <form className="p-4 bg-slate-900 flex justify-center">
@@ -264,9 +360,9 @@ export default function InterviewPage() {
           {displayMessage(messages)}
           {showResult && (
             displayActionButton(
-              <Link to="/results">
+              <span onClick={handleResultsClick}>
                 RESULTS
-              </Link>
+              </span>
             )
           )}
         </article>
@@ -308,4 +404,3 @@ export default function InterviewPage() {
     );
   }
 }
-

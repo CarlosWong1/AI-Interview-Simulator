@@ -6,9 +6,7 @@ const topics = [
     { value: 'javascript', label: 'JavaScript' },
     { value: 'react', label: 'React' },
     { value: 'css', label: 'CSS' },
-    { value: 'python', label: 'Python' },
     { value: 'nodejs', label: 'Node.js' },
-    { value: 'typescript', label: 'TypeScript' },
 ];
 
 export default function CustomSelect({ value, onChange }) {

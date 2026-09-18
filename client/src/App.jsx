@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       {path: "/dashboard", element: <DashboardPage />},
       {path: "/history", element: <HistoryPage />},
       {path: "/interview", element: <InterviewPage />},
-      {path: "/results", element: <ResultsPage />},
+      {path: "/results/:interviewId", element: <ResultsPage />},
       {path: "/account", element: <AccountPage />}
     ]
   },

@@ -7,7 +7,7 @@ function AppLayout() {
             <nav>
                 <Navbar></Navbar>
             </nav>
-            <main className="flex-1 overflow-hidden">
+            <main className="flex-1 min-h-0 overflow-y-auto">
                 <Outlet></Outlet>
             </main>
         </div>
