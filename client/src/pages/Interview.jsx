@@ -36,11 +36,13 @@ export default function InterviewPage() {
 
   useEffect(() => {
     const loadUser = async () => {
-      const {data: {user}} = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
-    }
+    };
     loadUser();
-  }, [])
+  }, []);
 
   const addLocalMessage = (sender, message) => {
     setMessages((prev) => [
@@ -48,10 +50,10 @@ export default function InterviewPage() {
       {
         id: crypto.randomUUID(),
         sender: sender,
-        message: message
-      }
-    ])
-  }
+        message: message,
+      },
+    ]);
+  };
 
   const addMessage = async (sender, message) => {
     addLocalMessage(sender, message);
@@ -61,14 +63,12 @@ export default function InterviewPage() {
       return;
     }
 
-    const {error: messageError} = await supabase
-      .from("messages")
-      .insert({
-        interview_id: interviewId,
-        user_id: user.id,
-        role: sender,
-        content: message
-      });
+    const { error: messageError } = await supabase.from("messages").insert({
+      interview_id: interviewId,
+      user_id: user.id,
+      role: sender,
+      content: message,
+    });
 
     if (messageError) {
       console.error(messageError.message);
@@ -76,7 +76,7 @@ export default function InterviewPage() {
     }
   };
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleTopicSelection = async () => {
     if (!selectedTopic) return;
@@ -85,19 +85,19 @@ export default function InterviewPage() {
       console.log("User not authenticate");
       return;
     }
-    console.log("User:", user)
-    const {data, error: interviewError} = await supabase
+    console.log("User:", user);
+    const { data, error: interviewError } = await supabase
       .from("interviews")
       .insert({
-        user_id: user.id, 
-        topic: selectedTopic
+        user_id: user.id,
+        topic: selectedTopic,
       })
       .select()
       .single();
 
     console.log("Interview:", data);
     console.log("Error:", interviewError);
-    
+
     if (interviewError) {
       console.error(interviewError.message);
       return;
@@ -107,43 +107,49 @@ export default function InterviewPage() {
     setInterviewId(newInterviewId);
     setStage(STAGES.INTRODUCTION);
 
-    await delay(1000)
-    addLocalMessage("AI", `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`);
-    await delay(2000)
-    addLocalMessage("AI", "I will ask you 3 questions based on your selected topic.");
-    await delay(2000)
+    await delay(1000);
+    addLocalMessage(
+      "AI",
+      `Hello, welcome to your ${selectedTopic.toUpperCase()} interview.`,
+    );
+    await delay(2000);
+    addLocalMessage(
+      "AI",
+      "I will ask you 3 questions based on your selected topic.",
+    );
+    await delay(2000);
     addLocalMessage("AI", "Once you are ready just click on the start below.");
   };
 
   const handleStartInterview = async () => {
-    setLoading(true)
-    const url =`${import.meta.env.VITE_API_URL}/api/interview/start`;
+    setLoading(true);
+    const url = `${import.meta.env.VITE_API_URL}/api/interview/start`;
     const payload = {
-      topic: selectedTopic
-    }
+      topic: selectedTopic,
+    };
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          "content-type": "application/json"
+          "content-type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to post: ${response.status}`)
+        throw new Error(`Failed to post: ${response.status}`);
       }
       const result = await response.json();
 
       console.log(`Sucess:`, result.questions);
 
       setQuestions(result.questions);
-      setLoading(false)
+      setLoading(false);
       setStage(STAGES.INTERVIEW);
 
-      await delay(1000)
+      await delay(1000);
       addLocalMessage("AI", "Great. Let's Begin");
-      await delay(2000)
+      await delay(2000);
       await addMessage("AI", result.questions[0].question);
     } catch (error) {
       console.error(`Error sending data:`, error);
@@ -162,55 +168,54 @@ export default function InterviewPage() {
 
     const currentResponse = {
       question: questions[currentQuestion].question,
-      answer: userAnswer
+      answer: userAnswer,
     };
 
-    setResponses(prev => [...prev, currentResponse])
+    setResponses((prev) => [...prev, currentResponse]);
 
     if (hasNext) {
       const nextQuestion = currentQuestion + 1;
       setCurrentQuestion(nextQuestion);
 
       setUserAnswer("");
-      await delay(2000)
+      await delay(2000);
       await addMessage("AI", questions[nextQuestion].question);
-      
     } else {
       setUserAnswer("");
-      await delay(2000)
+      await delay(2000);
       addLocalMessage("AI", "Thank you for completing the interview");
       await delay(2000);
       setInterviewComplete(true);
       await delay(2000);
       addLocalMessage("AI", "I am now analyzing your your response...");
-      
+
       const allResponses = [...responses, currentResponse];
-      const url =`${import.meta.env.VITE_API_URL}/api/interview/evaluate`;
+      const url = `${import.meta.env.VITE_API_URL}/api/interview/evaluate`;
 
       const payload = {
         topic: selectedTopic,
-        responses: allResponses
-      }
+        responses: allResponses,
+      };
 
       try {
         const response = await fetch(url, {
           method: "POST",
           headers: {
-            "content-type": "application/json"
+            "content-type": "application/json",
           },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
-          throw new Error(`Failed to post: ${response.status}`)
+          throw new Error(`Failed to post: ${response.status}`);
         }
         const result = await response.json();
         console.log("Interview feedback: ", result);
 
-        const {data, error} = await supabase
+        const { data, error } = await supabase
           .from("interviews")
           .update({
-            feedback: result
+            feedback: result,
           })
           .eq("id", interviewId)
           .select()
@@ -221,35 +226,47 @@ export default function InterviewPage() {
           return;
         }
 
-        console.log(data)
+        console.log(data);
 
-        addLocalMessage("AI", "Analysis complete. Click on the results to see your result");
+        addLocalMessage(
+          "AI",
+          "Analysis complete. Click on the results to see your result",
+        );
         await delay(1000);
         setShowResult(true);
-
       } catch (error) {
-        console.error(error.message)
+        console.error(error.message);
       }
     }
   };
 
   const handleResultsClick = () => {
-    navigate(`/results/${interviewId}`)
-  }
+    navigate(`/results/${interviewId}`);
+  };
 
-  const inputContainer = "flex items-center rounded-full bg-white border-2 border-gray-200 px-3 py-2 w-full md:w-3/4"
-  const textareaEnabled = "grow resize-none bg-transparent outline-none p-2 md:text-lg placeholder:text-gray-500";
-  const textareaDisabled = "grow resize-none bg-transparent outline-none p-2 md:text-lg opacity-60 placeholder:text-gray-500";
-  const sendButton = "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 flex items-center justify-center hover:bg-yellow-300 transition-colors cursor-pointer";
-  const sendButtonDisabled = "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 opacity-50 flex items-center justify-center cursor-not-allowed"
+  const inputContainer =
+    "flex items-center rounded-full bg-white border-2 border-gray-200 px-3 py-2 w-full md:w-3/4";
+  const textareaEnabled =
+    "grow resize-none bg-transparent outline-none p-2 md:text-lg placeholder:text-gray-500";
+  const textareaDisabled =
+    "grow resize-none bg-transparent outline-none p-2 md:text-lg opacity-60 placeholder:text-gray-500";
+  const sendButton =
+    "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 flex items-center justify-center hover:bg-yellow-300 transition-colors cursor-pointer";
+  const sendButtonDisabled =
+    "w-11 h-11 md:w-14 md:h-14 rounded-full bg-yellow-400 opacity-50 flex items-center justify-center cursor-not-allowed";
 
   const displayMessage = (message) => {
     return (
       <>
         {message.map((text) => {
           return (
-            <div key={text.id} className={`w-full flex ${text.sender === "AI" ? "justify-start" : "justify-end"}`}>
-              <div className={`${text.sender === "AI" ? "bg-slate-100" : "bg-sky-100"} py-2 px-4 mb-2 inline-block rounded max-w-3/4`}>
+            <div
+              key={text.id}
+              className={`w-full flex ${text.sender === "AI" ? "justify-start" : "justify-end"}`}
+            >
+              <div
+                className={`${text.sender === "AI" ? "bg-slate-100" : "bg-sky-100"} py-2 px-4 mb-2 inline-block rounded max-w-3/4`}
+              >
                 <p className="font-semibold md:text-xl">{text.sender}</p>
                 <p className="break-all md:text-xl">{text.message}</p>
               </div>
@@ -258,18 +275,20 @@ export default function InterviewPage() {
         })}
       </>
     );
-  }
+  };
 
   const displayActionButton = (content) => {
     return (
       <div className="w-full flex">
         <div className="bg-slate-100 py-2 px-4 mb-2 inline-block rounded max-w-3/4">
           <p className="font-semibold text-medium md:text-xl">AI</p>
-          <div className="font-semibold text-sky-500 cursor-pointer md:text-xl">{content}</div>
+          <div className="font-semibold text-sky-500 cursor-pointer md:text-xl">
+            {content}
+          </div>
         </div>
       </div>
     );
-  }
+  };
 
   //* SELECT TOPIC VIEW
   if (stage === STAGES.SELECT_TOPIC) {
@@ -279,14 +298,22 @@ export default function InterviewPage() {
           Start a New Interview
         </h1>
         <div className="flex-col flex items-center gap-6 w-full max-w-md">
-          <label htmlFor="topic" className="text-xl pb-2 font-semibold md:text-3xl">
+          <label
+            htmlFor="topic"
+            className="text-xl pb-2 font-semibold md:text-3xl"
+          >
             Select a topic
           </label>
           <CustomSelect value={selectedTopic} onChange={setSelectedTopic} />
           <button
             onClick={handleTopicSelection}
             disabled={!selectedTopic}
-            className={`mt-4 bg-yellow-300 px-6 py-3 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out hover:scale-105 active:scale-[0.98] font-semibold text-lg ${!selectedTopic ? "opacity-50 hover:scale-100 hover:bg-yellow-400 hover:text-slate-900" : ""} md:text-3xl`}
+            className={`mt-4 bg-yellow-300 w-50 py-3 rounded border-1 border-black font-semibold text-lg md:text-3xl
+              ${
+                selectedTopic
+                  ? "cursor-pointer text-slate-900 hover:bg-black hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-300 transition-all duration-300 ease-in-out"
+                  : "opacity-50"
+              }`}
           >
             Start Interview
           </button>
@@ -306,20 +333,17 @@ export default function InterviewPage() {
         </header>
         <article className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5">
           {displayMessage(messages)}
-          {messages.length === 3 && (
-            displayActionButton( 
+          {messages.length === 3 &&
+            displayActionButton(
               loading ? (
                 <div className="flex items-center gap-2">
-                  <Loader className="animate-spin w-5 h-5"/>
+                  <Loader className="animate-spin w-5 h-5" />
                   <span>Generating interview...</span>
                 </div>
               ) : (
-                <span onClick={handleStartInterview}>
-                  START INTERVIEW
-                </span>
-              )
-            )
-          )}
+                <span onClick={handleStartInterview}>START INTERVIEW</span>
+              ),
+            )}
         </article>
         <form className="p-4 bg-slate-900 flex justify-center">
           <div className={inputContainer}>
@@ -335,11 +359,8 @@ export default function InterviewPage() {
               }}
               className={textareaDisabled}
             ></textarea>
-            <button
-              disabled
-              className={sendButtonDisabled}
-            >
-              <Send strokeWidth={2} size={20}/>
+            <button disabled className={sendButtonDisabled}>
+              <Send strokeWidth={2} size={20} />
             </button>
           </div>
         </form>
@@ -356,17 +377,20 @@ export default function InterviewPage() {
             {selectedTopic.toUpperCase()} Interview
           </h1>
         </header>
-        <article className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5" ref={chatRef}>
+        <article
+          className="overflow-y-auto flex-1 p-4 md:px-30 md:py-5"
+          ref={chatRef}
+        >
           {displayMessage(messages)}
-          {showResult && (
+          {showResult &&
             displayActionButton(
-              <span onClick={handleResultsClick}>
-                RESULTS
-              </span>
-            )
-          )}
+              <span onClick={handleResultsClick}>RESULTS</span>,
+            )}
         </article>
-        <form onSubmit={handleSend} className="p-4 bg-slate-900 flex justify-center">
+        <form
+          onSubmit={handleSend}
+          className="p-4 bg-slate-900 flex justify-center"
+        >
           <div className={inputContainer}>
             <textarea
               disabled={interviewComplete}

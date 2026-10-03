@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 import { LoaderCircle } from "lucide-react";
 
 export default function LoginPage() {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export default function LoginPage() {
 
       setPassword("");
       setEmail("");
-      navigation("/dashboard");
+      navigate("/dashboard");
 
     } catch (error) {
       console.error(error.message);

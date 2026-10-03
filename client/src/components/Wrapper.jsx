@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 import { Navigate } from "react-router-dom";
+import LoadingState from "./LoadingState";
 
 export default function Wrapper({children}) {
   const [session, setSession] = useState(null);
@@ -26,7 +27,7 @@ export default function Wrapper({children}) {
   }, []);
 
   if (loading) {
-    return <h1 className="text-3xl font-semibold text-center mt-20">Loading...</h1>;
+    return (<LoadingState></LoadingState>)
   }
 
   if (session) {

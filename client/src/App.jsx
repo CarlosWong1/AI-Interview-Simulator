@@ -2,13 +2,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import PageNotFound from './pages/PageNotFound.jsx'
 import LandingPage from './pages/Landing.jsx'
-import DashboardPage from './pages/Dashboard.jsx'
-import HistoryPage from './pages/History.jsx'
+import DashboardPage from './pages/dashboard/Dashboard.jsx'
+import HistoryPage from './pages/history/History.jsx'
 import InterviewPage from './pages/Interview.jsx'
 import LoginPage from './pages/Login.jsx'
 import RegisterPage from './pages/Register.jsx'
-import ResultsPage from './pages/Results.jsx'
-import AccountPage from './pages/Account.jsx'
+import ResultsPage from './pages/results/Results.jsx'
+import SettingsPage from './pages/settings/Settings.jsx'
 
 import AuthLayout from './layouts/AuthLayout.jsx'
 import PublicLayout from './layouts/PublicLayout.jsx'
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
       {path: "/history", element: <HistoryPage />},
       {path: "/interview", element: <InterviewPage />},
       {path: "/results/:interviewId", element: <ResultsPage />},
-      {path: "/account", element: <AccountPage />}
+      {path: "/settings", element: <SettingsPage />}
     ]
   },
 ]);

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { useParams } from "react-router-dom";
+import LoadingState from "../../components/LoadingState";
+import NoResultsPage from "./NoResultsPage";
 
 export default function ResultsPage() {
   const [feedbackInterview, setFeedbackInterview] = useState(null);
+  const [notFound, setNotFound] = useState(false);
   const { interviewId } = useParams();
 
   useEffect(() => {
@@ -13,9 +16,10 @@ export default function ResultsPage() {
         .select("*")
         .eq("id", interviewId)
         .single();
-      
+
       if (error) {
         console.error(error.message);
+        setNotFound(true);
         return;
       }
       setFeedbackInterview(data);
@@ -26,8 +30,16 @@ export default function ResultsPage() {
 
   const summaryCard = "bg-yellow-300 py-3 px-6 border-1 rounded";
 
+  if (notFound) {
+    return (<NoResultsPage />);
+  }
+
   if (!feedbackInterview) {
-    return <h1 className="text-3xl font-semibold text-center mt-20">Loading...</h1>;
+    return (<LoadingState></LoadingState>)
+  }
+
+  if (!feedbackInterview.feedback) {
+    return (<NoResultsPage />);
   }
 
   return (

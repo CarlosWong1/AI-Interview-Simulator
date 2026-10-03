@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function DashboardPage() {
+export default function NewUserPage() {
     return (
         <article className="flex-center flex-col mt-20 md:mt-40 w-full max-w-4xl mx-auto px-4">
             <h1 className='font-bold text-4xl mb-1 md:text-5xl text-center'>WELCOME TO PREPFLOW</h1>
@@ -15,7 +15,7 @@ export default function DashboardPage() {
                 </ul>
             </div>
             <Link to="/interview">
-                <button className='mt-15 bg-yellow-300 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-2 border-black hover:bg-black hover:text-white hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out hover:scale-105 font-semibold md:text-2xl md:py-4 md:px-8'>Start Your First Interview</button>
+                <button className='mt-15 bg-yellow-300 px-4 py-2 text-slate-900 rounded cursor-pointer rounded border-1 border-black hover:bg-black hover:text-white hover:border-black focus:outline-none focus:ring-2 focus:ring-sky-300 transition-colors transition duration-300 ease-in-out hover:scale-105 font-semibold md:text-2xl md:py-4 md:px-8'>Start Your First Interview</button>
             </Link>
         </article>
     );
