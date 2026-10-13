@@ -11,6 +11,8 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] })
   ],
 
+  base: "/AI-Interview-Simulator",
+
   server: {
     proxy: {
       "/api": {
