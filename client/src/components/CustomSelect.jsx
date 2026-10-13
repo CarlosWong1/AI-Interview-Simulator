@@ -37,7 +37,7 @@ export default function CustomSelect({ value, onChange }) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="bg-yellow-300 text-slate-900 rounded border-1 border-black
-                      px-4 py-3 font-semibold text-lg cursor-pointer w-50 
+                      px-4 py-3 font-semibold text-lg cursor-pointer w-50 md:w-80
                          hover:bg-black hover:text-white hover:border-black
                          focus:outline-none focus:ring-2 focus:ring-sky-300
                          transition-all duration-300 ease-in-out

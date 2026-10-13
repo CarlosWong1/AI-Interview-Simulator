@@ -1,27 +1,28 @@
 import { Link } from "react-router-dom";
-import { SearchX } from "lucide-react";
+import { ArrowRight, SearchX } from "lucide-react";
 
 export default function NoResultsPage() {
   return (
-    <div className="flex-center flex-col min-h-full gap-6 text-center px-4">
-      <div className="relative flex-center">
-        <span className="absolute w-15 h-15 rounded-full bg-yellow-300/50 animate-ping" />
-        <div className="flex-center w-15 h-15 bg-yellow-100 border border-yellow-500 rounded">
-          <SearchX className="w-7 h-7 text-yellow-600" strokeWidth={2} />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <h1 className="font-bold text-3xl md:text-5xl">No Results Yet</h1>
-        <p className="font-semibold opacity-70 md:text-xl max-w-md mx-auto">
-          There is no interview here. Start an interview to see your results.
+    <div className="flex min-h-full items-center justify-center px-4 py-10">
+      <div className="flex w-full max-w-xl flex-col items-center rounded-2xl border border-[#e4e5df] bg-white px-6 py-14 text-center">
+        <span className="flex-center size-14 rounded-2xl bg-[#fffbe9]">
+          <SearchX size={26} color="#20221f" />
+        </span>
+        <h1 className="mt-5 text-2xl font-bold leading-[1.2] text-[#20221f]">
+          No results yet
+        </h1>
+        <p className="mt-2 max-w-md text-sm leading-[1.6] text-[#686b64]">
+          There is no interview here. Complete an interview and your results
+          will show up on this page.
         </p>
+        <Link
+          to="/interview"
+          className="mt-6 flex h-12 cursor-pointer items-center justify-center gap-2.5 rounded-[10px] border border-[#f4ce38] bg-[#f4ce38] px-6 text-sm font-semibold text-[#20221f] transition-all duration-200 hover:brightness-95 active:scale-[0.99]"
+        >
+          Start an Interview
+          <ArrowRight size={16} color="#20221f" />
+        </Link>
       </div>
-      <Link
-        to="/interview"
-        className="cursor-pointer border-1 rounded py-2 px-4 font-semibold bg-yellow-300 hover:bg-black hover:text-white md:py-3 md:px-5"
-      >
-        Start an Interview
-      </Link>
     </div>
   );
 }

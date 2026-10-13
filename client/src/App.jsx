@@ -1,13 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import PageNotFound from './pages/PageNotFound.jsx'
-import LandingPage from './pages/Landing.jsx'
+import PageNotFound from './pages/page-not-found/PageNotFound.jsx'
+import LandingPage from './pages/landing/Landing.jsx'
 import DashboardPage from './pages/dashboard/Dashboard.jsx'
 import HistoryPage from './pages/history/History.jsx'
-import InterviewPage from './pages/Interview.jsx'
-import LoginPage from './pages/Login.jsx'
-import RegisterPage from './pages/Register.jsx'
+import InterviewPage from './pages/interview/Interview.jsx'
+import LoginPage from './pages/login/Login.jsx'
+import RegisterPage from './pages/register/Register.jsx'
 import ResultsPage from './pages/results/Results.jsx'
+import NoResultsPage from './pages/results/NoResultsPage.jsx'
 import SettingsPage from './pages/settings/Settings.jsx'
 
 import AuthLayout from './layouts/AuthLayout.jsx'
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
       {path: "/dashboard", element: <DashboardPage />},
       {path: "/history", element: <HistoryPage />},
       {path: "/interview", element: <InterviewPage />},
+      {path: "/results", element: <NoResultsPage />},
       {path: "/results/:interviewId", element: <ResultsPage />},
       {path: "/settings", element: <SettingsPage />}
     ]

@@ -54,9 +54,13 @@ const resultEvaluationJsonSchema = {
       type: "number",
       description: "The overall score of the interview out of 100."
     },
+    headline: {
+      type: "string",
+      description: "A short, engaging title that summarizes the overall-interview of the candidates performace."
+    },
     summary: {
       type: "string",
-      description: "The summary of the interview."
+      description: "A one sentence summary of the interview."
     },
     strengths: {
       type: "array",
@@ -121,6 +125,8 @@ export async function generateResultEvaluation(topic, responses) {
     - Do not invent information that the candidate did not mention.
     - If an answer is partially correct, explain what was correct and what was missing.
     - If the candidate gives an incorrect answer, explain the correct concept briefly.
+    - Generate a concise headline (5-10 words) that summarizes the candidate's overall performance. The headline should be professional, encouraging, and should not mention the numerical score.
+    - Generate a short overall summary (1-2 sentences) highlighting the candidate's strongest qualities, the most important areas for improvement, and how improving them would strengthen future technical interviews. Avoid repeating the strengths and improvements lists verbatim.
 
     Return only valid JSON that matches the provided response schema.
   `;

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import interviewRouter from "./routes/interviewRouter.js";
+import accountRouter from "./routes/accountRoutes.js";
 import express from "express";
 import cors from "cors";
 
@@ -10,6 +11,7 @@ app.use(cors())
 app.use(express.json());
 
 app.use("/api/interview", interviewRouter)
+app.use("/api/account", accountRouter);
 
 const PORT = process.env.PORT || 5000;
 

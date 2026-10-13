@@ -1,7 +1,7 @@
-import NewUserPage from "./newUserPage";
-import ReturningUserPage from "./ReturningUserPage";
+import NewUserPage from "./new-user/NewUserPage.jsx"
+import ReturningUserPage from "./returning-user/ReturningUserPage.jsx";
 import LoadingState from "../../components/LoadingState";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "../../lib/supabase.js";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
