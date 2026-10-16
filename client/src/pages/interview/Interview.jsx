@@ -118,9 +118,11 @@ export default function InterviewPage() {
     addLocalMessage("AI", "Once you are ready just click on the start below.");
   };
 
+  const baseUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, "");
+
   const handleStartInterview = async () => {
     setLoading(true);
-    const url = `${import.meta.env.VITE_API_URL}/api/interview/start`;
+    const url = `${baseUrl}/api/interview/start`;
     const payload = {
       topic: selectedTopic,
     };

@@ -11,7 +11,7 @@ export default function AboutModal({onClose}) {
         onClick={(e) => e.stopPropagation()}
       >
         <X className="ml-auto cursor-pointer" onClick={onClose}></X>
-        <h1>This is just a website build for leaning, I am even still learning on how to code. I made the website from scratch at first, then once I made the MVP, one of my friends told me to use an MCP to build the UI for the website and I tried using it. This is the result of using figma MCP for this website. It is very cool of how AI can do this. I am still learning to code better, please give me feedbacks and something that i can take into consideration on how to improve as a developer. Thank you.</h1>
+        <h1>This is just a website build for leaning, I am even still learning on how to code. I made the website from scratch at first, then once I made the MVP, I learned about MCP so I tried it. This is the result of using figma MCP for this website. It is very cool of how AI can do this. I am still learning to code better, please give me feedbacks and something that i can take into consideration on how to improve as a developer. Thank you.</h1>
         <p>Sincerly, VerSynC</p>
       </div>
     </div>

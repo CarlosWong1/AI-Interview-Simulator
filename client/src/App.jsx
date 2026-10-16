@@ -48,7 +48,9 @@ const router = createBrowserRouter([
       {path: "/settings", element: <SettingsPage />}
     ]
   },
-]);
+], {
+  basename: "/AI-Interview-Simulator/"
+});
 
 function App() {
   return (
