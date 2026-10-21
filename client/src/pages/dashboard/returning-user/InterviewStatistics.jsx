@@ -2,20 +2,20 @@ import { Flame, MessagesSquare, Star, Target } from "lucide-react";
 
 function StatisticCard({ icon: Icon, label, value, suffix, caption }) {
   return (
-    <div className="flex min-w-0 flex-col items-start gap-3.5 rounded-2xl border border-[#e4e5df] bg-white p-6">
+    <div className="flex min-w-0 flex-col items-start gap-3.5 rounded-2xl border border-line bg-surface p-6">
       <div className="flex w-full items-center justify-between">
-        <p className="text-sm font-medium leading-normal text-[#686b64]">
+        <p className="text-sm font-medium leading-normal text-muted">
           {label}
         </p>
-        <Icon size={18} color="#20221f" />
+        <Icon size={18} className="text-ink" />
       </div>
-      <p className="w-full text-[36px] font-bold leading-[1.15] text-[#20221f]">
+      <p className="w-full text-[36px] font-bold leading-[1.15] text-ink">
         {value}
         {suffix && (
           <span className="text-xl font-medium leading-[1.15]">{suffix}</span>
         )}
       </p>
-      <p className="w-full truncate text-[13px] font-normal leading-normal text-[#686b64]">
+      <p className="w-full truncate text-[13px] font-normal leading-normal text-muted">
         {caption}
       </p>
     </div>

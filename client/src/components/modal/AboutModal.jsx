@@ -7,7 +7,7 @@ export default function AboutModal({onClose}) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md bg-white shadow-[0px_0px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg p-5 flex flex-col gap-4"
+        className="relative w-full max-w-md bg-surface shadow-[0px_0px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg p-5 flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <X className="ml-auto cursor-pointer" onClick={onClose}></X>

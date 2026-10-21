@@ -4,10 +4,10 @@ import { supabase } from "../../lib/supabase";
 import { Eye, EyeOff, LoaderCircle, Lock } from "lucide-react";
 
 const inputStyle =
-  "h-12 w-full rounded-[10px] border border-[#e4e5df] bg-white px-3.5 text-sm text-[#20221f] outline-none transition-colors placeholder:text-[#92958c] focus:border-[#dab628] disabled:opacity-60";
+  "h-12 w-full rounded-[10px] border border-line bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-faint focus:border-accent-hover disabled:opacity-60";
 
 const labelStyle =
-  "text-[13px] font-semibold uppercase leading-normal tracking-wide text-[#20221f]";
+  "text-[13px] font-semibold uppercase leading-normal tracking-wide text-ink";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -58,19 +58,19 @@ export default function LoginPage() {
       <div className="w-full max-w-[560px]">
         {/* Page introduction */}
         <div className="flex flex-col items-start gap-2.5">
-          <p className="text-[13px] font-semibold uppercase leading-normal tracking-wide text-[#686b64]">
+          <p className="text-[13px] font-semibold uppercase leading-normal tracking-wide text-muted">
             Account access
           </p>
-          <h1 className="text-[28px] md:text-[36px] font-normal leading-[1.2] text-[#20221f]">
+          <h1 className="text-[28px] md:text-[36px] font-normal leading-[1.2] text-ink">
             Sign in to PrepFlow
           </h1>
-          <p className="text-base font-normal leading-[1.6] text-[#686b64]">
+          <p className="text-base font-normal leading-[1.6] text-muted">
             Enter your credentials to access your interview prep and results.
           </p>
         </div>
 
         {/* Login card */}
-        <div className="mt-8 flex flex-col overflow-hidden rounded-2xl border border-[#e4e5df] bg-white">
+        <div className="mt-8 flex flex-col overflow-hidden rounded-2xl border border-line bg-surface">
           <form
             className="flex flex-col items-start gap-5 p-7"
             onSubmit={handleSubmit}
@@ -101,7 +101,7 @@ export default function LoginPage() {
                   onClick={() =>
                     setResetNote("Password reset is coming soon.")
                   }
-                  className="cursor-pointer text-[13px] font-medium text-[#b83d36] transition-colors hover:text-[#8f2e28]"
+                  className="cursor-pointer text-[13px] font-medium text-danger transition-colors hover:text-danger-strong"
                 >
                   Forgot password?
                 </button>
@@ -122,20 +122,20 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer text-[#686b64] transition-colors hover:text-[#20221f]"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer text-muted transition-colors hover:text-ink"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
               {resetNote && (
-                <p className="text-[13px] leading-normal text-[#b83d36]">
+                <p className="text-[13px] leading-normal text-danger">
                   {resetNote}
                 </p>
               )}
             </div>
 
             {message && (
-              <p className="w-full text-center text-sm font-medium leading-normal text-[#b83d36]">
+              <p className="w-full text-center text-sm font-medium leading-normal text-danger">
                 {message}
               </p>
             )}
@@ -143,7 +143,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`flex h-12 w-full items-center justify-center rounded-[10px] border border-[#f4ce38] bg-[#f4ce38] text-sm font-semibold text-[#20221f] transition-all duration-200 ${
+              className={`flex h-12 w-full items-center justify-center rounded-[10px] border border-accent bg-accent text-sm font-semibold text-on-accent transition-all duration-200 ${
                 loading
                   ? "cursor-wait opacity-70"
                   : "cursor-pointer hover:brightness-95 active:scale-[0.99]"
@@ -157,12 +157,12 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div className="border-t border-[#e4e5df] bg-[#f8f8f6] py-4 text-center">
-            <p className="text-sm leading-normal text-[#686b64]">
+          <div className="border-t border-line bg-background py-4 text-center">
+            <p className="text-sm leading-normal text-muted">
               Don&apos;t have an account?{" "}
               <Link
                 to="/register"
-                className="font-semibold text-[#20221f] transition-colors hover:text-[#b83d36]"
+                className="font-semibold text-ink transition-colors hover:text-danger"
               >
                 Create an account
               </Link>
@@ -170,7 +170,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-[13px] leading-normal text-[#92958c]">
+        <p className="mt-6 flex items-center justify-center gap-2 text-[13px] leading-normal text-faint">
           <Lock size={14} />
           Secured with end-to-end industry encryption
         </p>

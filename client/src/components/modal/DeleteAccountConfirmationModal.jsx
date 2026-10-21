@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 
 const inputStyle =
-  "h-11 w-full rounded-[10px] border border-[#e4e5df] bg-white px-3.5 text-sm text-[#20221f] outline-none transition-colors placeholder:text-[#92958c] focus:border-[#dab628]";
+  "h-11 w-full rounded-[10px] border border-line bg-surface px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-faint focus:border-accent-hover";
 
 const labelStyle =
-  "text-[13px] font-semibold leading-normal text-[#20221f]";
+  "text-[13px] font-semibold leading-normal text-ink";
 
-const helperText = "text-xs leading-normal text-[#686b64]";
+const helperText = "text-xs leading-normal text-muted";
 
 export default function DeleteAccountConfirmationModal({ onClose }) {
   const [deleteConfirmation, setDeleteConfimation] = useState("");
@@ -67,40 +67,40 @@ export default function DeleteAccountConfirmationModal({ onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#20221f]/50 p-5"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-5"
       onClick={onClose}
     >
       <div
-        className="relative flex w-full max-w-md flex-col gap-5 rounded-2xl border border-[#e4e5df] bg-white p-7 shadow-[0px_4px_16px_0px_rgba(32,34,31,0.16)]"
+        className="relative flex w-full max-w-md flex-col gap-5 rounded-2xl border border-line bg-surface p-7 shadow-[0px_4px_16px_0px_rgba(32,34,31,0.16)]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-5 top-5 cursor-pointer text-[#686b64] transition-colors duration-200 hover:text-[#20221f]"
+          className="absolute right-5 top-5 cursor-pointer text-muted transition-colors duration-200 hover:text-ink"
         >
           <X size={20} />
         </button>
 
         {/* Header */}
         <div className="flex flex-col items-start gap-3">
-          <span className="flex-center size-12 rounded-[10px] bg-[#fff6f5]">
-            <TriangleAlert size={24} color="#b83d36" />
+          <span className="flex-center size-12 rounded-[10px] bg-danger-tint">
+            <TriangleAlert size={24} className="text-danger" />
           </span>
-          <h1 className="text-xl font-bold leading-normal text-[#20221f]">
+          <h1 className="text-xl font-bold leading-normal text-ink">
             Delete your account?
           </h1>
         </div>
 
         {/* Permanent warning */}
-        <div className="flex flex-col items-start gap-2 rounded-[10px] border border-[#ebcdc9] bg-[#fff6f5] p-4">
-          <div className="flex items-center gap-2 text-[#b83d36]">
+        <div className="flex flex-col items-start gap-2 rounded-[10px] border border-danger-border bg-danger-tint p-4">
+          <div className="flex items-center gap-2 text-danger">
             <CircleAlert size={18} />
             <h2 className="text-sm font-semibold leading-normal">
               This action is permanent
             </h2>
           </div>
-          <p className="text-[13px] leading-[1.6] text-[#686b64]">
+          <p className="text-[13px] leading-[1.6] text-muted">
             Your profile, interview history, interview results, and account
             will be permanently deleted. This action cannot be undone.
           </p>
@@ -110,7 +110,7 @@ export default function DeleteAccountConfirmationModal({ onClose }) {
         <form className="flex flex-col items-start gap-4" onSubmit={handleDeleteAccount}>
           <div className="flex w-full flex-col items-start gap-2">
             <label htmlFor="delete_confirmation" className={labelStyle}>
-              Type <strong className="text-[#b83d36]">DELETE</strong> to confirm
+              Type <strong className="text-danger">DELETE</strong> to confirm
             </label>
             <input
               type="text"
@@ -142,7 +142,7 @@ export default function DeleteAccountConfirmationModal({ onClose }) {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer text-[#686b64] transition-colors hover:text-[#20221f]"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 cursor-pointer text-muted transition-colors hover:text-ink"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -156,14 +156,14 @@ export default function DeleteAccountConfirmationModal({ onClose }) {
             <button
               onClick={onClose}
               type="button"
-              className="flex h-11 flex-1 cursor-pointer items-center justify-center rounded-[10px] border border-[#e4e5df] bg-white text-sm font-semibold text-[#20221f] transition-colors duration-200 hover:bg-[#f3f4ef]"
+              className="flex h-11 flex-1 cursor-pointer items-center justify-center rounded-[10px] border border-line bg-surface text-sm font-semibold text-ink transition-colors duration-200 hover:bg-hover"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!canDelete}
-              className={`flex h-11 flex-[2] items-center justify-center gap-2 rounded-[10px] border border-[#b83d36] bg-[#b83d36] text-sm font-semibold text-white transition-all duration-200 ${
+              className={`flex h-11 flex-[2] items-center justify-center gap-2 rounded-[10px] border border-danger bg-danger text-sm font-semibold text-white transition-all duration-200 ${
                 canDelete
                   ? "cursor-pointer hover:brightness-90 active:scale-[0.99]"
                   : "cursor-not-allowed opacity-40"

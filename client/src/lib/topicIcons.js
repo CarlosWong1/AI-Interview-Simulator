@@ -16,11 +16,6 @@ export const TOPIC_ICONS = {
   "data structures & algorithms": CodeXml,
   "behavioral interview": MessagesSquare,
   "product management": ChartNoAxesCombined,
-  html: PanelsTopLeft,
-  javascript: CodeXml,
-  react: CodeXml,
-  css: PanelsTopLeft,
-  nodejs: Server,
 };
 
 export const DEFAULT_TOPIC_ICON = CodeXml;

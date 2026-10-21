@@ -1,67 +1,11 @@
-import {
-  PanelsTopLeft,
-  Database,
-  Network,
-  CodeXml,
-  MessagesSquare,
-  ChartNoAxesCombined,
+import { 
   Info,
   Check,
   Clock3,
   MessageSquare,
-  ArrowRight,
   Lightbulb,
 } from "lucide-react";
-
-const TOPICS = [
-  {
-    value: "Frontend development",
-    icon: PanelsTopLeft,
-    description:
-      "Build better interfaces, from browser fundamentals to modern frameworks.",
-    tags: "JavaScript · React · CSS",
-    overview: "Practice the skills behind thoughtful, responsive web experiences.",
-  },
-  {
-    value: "Backend development",
-    icon: Database,
-    description:
-      "Go deeper on APIs, databases, and reliable server-side architecture.",
-    tags: "APIs · Databases · Security",
-    overview:
-      "Strengthen the server-side thinking that keeps applications reliable.",
-  },
-  {
-    value: "System design",
-    icon: Network,
-    description: "Think through trade-offs and design systems that scale.",
-    tags: "Architecture · Scaling · Trade-offs",
-    overview: "Learn to reason about scale, trade-offs, and architecture.",
-  },
-  {
-    value: "Data structures & algorithms",
-    icon: CodeXml,
-    description: "Sharpen your problem-solving skills and explain your approach.",
-    tags: "Arrays · Trees · Complexity",
-    overview: "Build confidence solving problems and explaining your approach.",
-  },
-  {
-    value: "Behavioral interview",
-    icon: MessagesSquare,
-    description:
-      "Tell your story with clarity and turn your experience into strong answers.",
-    tags: "Leadership · Teamwork · STAR",
-    overview: "Turn your experience into clear, compelling answers.",
-  },
-  {
-    value: "Product management",
-    icon: ChartNoAxesCombined,
-    description:
-      "Practice product thinking, prioritization, and decisions grounded in data.",
-    tags: "Strategy · Metrics · Execution",
-    overview: "Sharpen product thinking and data-driven decision making.",
-  },
-];
+import { TOPICS } from "../../../lib/TOPICS";
 
 const EXPECTATIONS = [
   "Real-world interview questions",
@@ -90,33 +34,33 @@ export default function InterviewConfiguration({
         aria-pressed={isSelected}
         className={`flex h-[178px] cursor-pointer flex-col items-start gap-3.5 rounded-2xl p-5 text-left transition-colors duration-200 ${
           isSelected
-            ? "border-[1.5px] border-[#dab628] bg-[#fffbe9]"
-            : "border border-[#e4e5df] bg-white hover:border-[#ced0c7]"
+            ? "border-[1.5px] border-accent-hover bg-accent-tint"
+            : "border border-line bg-surface hover:border-line-strong"
         }`}
       >
         <div className="flex w-full items-center gap-3">
           <span
             className={`flex-center size-9 shrink-0 rounded-lg ${
-              isSelected ? "bg-[#f4ce38]" : "bg-[#f3f4ef]"
+              isSelected ? "bg-accent text-on-accent" : "bg-hover text-ink"
             }`}
           >
-            <Icon size={20} color="#20221f" />
+            <Icon size={20} />
           </span>
-          <p className="flex-1 text-base leading-[1.3] text-[#20221f]">
-            {t.value}
+          <p className="flex-1 text-base leading-[1.3] text-ink">
+            {t.label}
           </p>
           {isSelected ? (
-            <span className="flex-center size-5 shrink-0 rounded-full border-[1.5px] border-[#20221f] bg-[#20221f]">
+            <span className="flex-center size-5 shrink-0 rounded-full border-[1.5px] border-coal bg-coal">
               <Check size={13} color="#ffffff" strokeWidth={3} />
             </span>
           ) : (
-            <span className="size-5 shrink-0 rounded-full border-[1.5px] border-[#ced0c7] bg-white" />
+            <span className="size-5 shrink-0 rounded-full border-[1.5px] border-line-strong bg-surface" />
           )}
         </div>
-        <p className="w-full text-[13px] leading-normal text-[#686b64]">
+        <p className="w-full text-[13px] leading-normal text-muted">
           {t.description}
         </p>
-        <p className="w-full text-[11px] font-medium leading-[1.4] text-[#686b64]">
+        <p className="w-full text-[11px] font-medium leading-[1.4] text-muted">
           {t.tags}
         </p>
       </button>
@@ -128,8 +72,8 @@ export default function InterviewConfiguration({
       {/* Topic selection */}
       <div className="flex min-w-0 flex-1 flex-col items-start gap-5">
         <div className="flex w-full items-center justify-between">
-          <p className="text-lg text-[#20221f]">Choose your topic</p>
-          <p className="text-xs text-[#686b64]">
+          <p className="text-lg text-ink">Choose your topic</p>
+          <p className="text-xs text-muted">
             {TOPICS.length} topics available
           </p>
         </div>
@@ -139,8 +83,8 @@ export default function InterviewConfiguration({
         </div>
 
         <div className="flex items-center gap-2">
-          <Info size={15} color="#686b64" />
-          <p className="text-xs text-[#686b64]">
+          <Info size={15} className="text-muted" />
+          <p className="text-xs text-muted">
             Pick one topic per session. You can try a different one anytime.
           </p>
         </div>
@@ -148,65 +92,65 @@ export default function InterviewConfiguration({
 
       {/* Interview overview */}
       <div className="flex w-full flex-col items-start gap-5 lg:w-[360px] lg:pt-11">
-        <div className="flex w-full flex-col items-start gap-6 rounded-2xl border border-[#e4e5df] bg-white p-6">
+        <div className="flex w-full flex-col items-start gap-6 rounded-2xl border border-line bg-surface p-6">
           <div className="flex w-full items-center justify-between">
-            <p className="text-base text-[#20221f]">Your interview</p>
+            <p className="text-base text-ink">Your interview</p>
             <span
               className={`flex items-center gap-[5px] rounded-full px-[9px] py-[5px] ${
-                hasTopic ? "bg-[#fffbe9]" : "bg-[#f3f4ef]"
+                hasTopic ? "bg-accent-tint" : "bg-hover"
               }`}
             >
-              {hasTopic && <Check size={12} color="#20221f" strokeWidth={3} />}
-              <p className="text-[11px] font-medium text-[#20221f]">
+              {hasTopic && <Check size={12} className="text-ink" strokeWidth={3} />}
+              <p className="text-[11px] font-medium text-ink">
                 {hasTopic ? "Ready" : "Pick a topic"}
               </p>
             </span>
           </div>
 
           <div className="flex w-full flex-col items-start gap-2.5">
-            <p className="text-[11px] font-semibold uppercase text-[#686b64]">
+            <p className="text-[11px] font-semibold uppercase text-muted">
               Selected topic
             </p>
-            <p className="text-2xl leading-[1.2] text-[#20221f]">
-              {hasTopic ? topic.value : "No topic selected"}
+            <p className="text-2xl leading-[1.2] text-ink">
+              {hasTopic ? topic.label : "No topic selected"}
             </p>
-            <p className="text-[13px] leading-normal text-[#686b64]">
+            <p className="text-[13px] leading-normal text-muted">
               {hasTopic
                 ? topic.overview
                 : "Pick a topic to see your session overview."}
             </p>
           </div>
 
-          <div className="flex w-full items-start gap-5 rounded-[10px] bg-[#f8f8f6] p-4">
+          <div className="flex w-full items-start gap-5 rounded-[10px] bg-background p-4">
             <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
               <div className="flex items-center gap-1.5">
-                <Clock3 size={14} color="#686b64" />
-                <p className="text-[11px] text-[#686b64]">Duration</p>
+                <Clock3 size={14} className="text-muted" />
+                <p className="text-[11px] text-muted">Duration</p>
               </div>
-              <p className="text-sm font-semibold text-[#20221f]">
+              <p className="text-sm font-semibold text-ink">
                 ~15 minutes
               </p>
             </div>
-            <div className="h-10 w-px bg-[#e4e5df]" />
+            <div className="h-10 w-px bg-line" />
             <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
               <div className="flex items-center gap-1.5">
-                <MessageSquare size={14} color="#686b64" />
-                <p className="text-[11px] text-[#686b64]">Questions</p>
+                <MessageSquare size={14} className="text-muted" />
+                <p className="text-[11px] text-muted">Questions</p>
               </div>
-              <p className="text-sm font-semibold text-[#20221f]">
+              <p className="text-sm font-semibold text-ink">
                 3 questions
               </p>
             </div>
           </div>
 
           <div className="flex w-full flex-col items-start gap-3">
-            <p className="text-[13px] font-semibold text-[#20221f]">
+            <p className="text-[13px] font-semibold text-ink">
               Here&apos;s what to expect
             </p>
             {EXPECTATIONS.map((expectation) => (
               <div key={expectation} className="flex w-full items-start gap-[9px]">
-                <Check size={14} color="#686b64" className="mt-[3px] shrink-0" />
-                <p className="flex-1 text-xs leading-normal text-[#686b64]">
+                <Check size={14} className="mt-[3px] shrink-0 text-muted" />
+                <p className="flex-1 text-xs leading-normal text-muted">
                   {expectation}
                 </p>
               </div>
@@ -218,28 +162,27 @@ export default function InterviewConfiguration({
               type="button"
               onClick={onStart}
               disabled={!hasTopic || loading}
-              className={`flex h-[52px] w-full items-center justify-center gap-3 rounded-[10px] bg-[#f4ce38] text-[15px] text-[#20221f] transition-all duration-200 ${
+              className={`flex h-[52px] w-full items-center justify-center gap-3 rounded-[10px] bg-accent text-[15px] text-on-accent transition-all duration-200 ${
                 hasTopic && !loading
                   ? "cursor-pointer hover:brightness-95 active:scale-[0.99]"
                   : "cursor-not-allowed opacity-40"
               }`}
             >
               Start interview
-              <ArrowRight size={18} color="#20221f" />
             </button>
-            <p className="text-[11px] text-[#686b64]">
+            <p className="text-[11px] text-muted">
               Just practice. No pressure.
             </p>
           </div>
         </div>
 
         <div className="flex w-full items-start gap-2.5 px-2">
-          <Lightbulb size={19} color="#686b64" className="shrink-0" />
+          <Lightbulb size={19} className="text-muted shrink-0" />
           <div className="flex min-w-0 flex-1 flex-col items-start gap-1">
-            <p className="text-xs font-semibold text-[#20221f]">
+            <p className="text-xs font-semibold text-ink">
               Make the most of your practice
             </p>
-            <p className="text-xs leading-normal text-[#686b64]">
+            <p className="text-xs leading-normal text-muted">
               Find a quiet spot and explain your thinking, just like you would
               in a real interview.
             </p>

@@ -8,16 +8,16 @@ function Message({ message }) {
   return (
     <div className={`flex w-full ${isAI ? "justify-start" : "justify-end"}`}>
       {isAI ? (
-        <div className="flex max-w-[75%] flex-col items-start gap-2 rounded-2xl rounded-bl-md border border-[#e4e5df] bg-white p-4">
-          <span className="rounded bg-[#f4ce38] px-1.5 py-0.5 text-[10px] font-bold uppercase leading-normal text-[#20221f]">
+        <div className="flex max-w-[75%] flex-col items-start gap-2 rounded-2xl rounded-bl-md border border-line bg-surface p-4">
+          <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-bold uppercase leading-normal text-on-accent">
             AI
           </span>
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#20221f]">
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink">
             {message.message}
           </p>
         </div>
       ) : (
-        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-[#20221f] p-4">
+        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-coal p-4">
           <p className="whitespace-pre-wrap text-sm leading-relaxed text-white">
             {message.message}
           </p>
@@ -55,19 +55,19 @@ export default function InterviewChat({
   };
 
   return (
-    <div className="flex h-full w-full flex-col bg-white">
+    <div className="flex h-full w-full flex-col bg-surface">
       {/* Header */}
-      <header className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b border-[#e4e5df] px-4 md:px-8">
+      <header className="flex h-14 w-full shrink-0 items-center justify-between gap-4 border-b border-line px-4 md:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="flex-center size-8 shrink-0 rounded-lg bg-[#f3f4ef]">
-            <Icon size={18} color="#20221f" />
+          <span className="flex-center size-8 shrink-0 rounded-lg bg-hover">
+            <Icon size={18} className="text-ink" />
           </span>
-          <p className="min-w-0 truncate text-base font-semibold leading-normal text-[#20221f]">
+          <p className="min-w-0 truncate text-base font-semibold leading-normal text-ink">
             {topic}
           </p>
         </div>
         {progress && (
-          <span className="shrink-0 whitespace-nowrap rounded-full bg-[#f3f4ef] px-3 py-1 text-xs font-medium leading-normal text-[#686b64]">
+          <span className="shrink-0 whitespace-nowrap rounded-full bg-hover px-3 py-1 text-xs font-medium leading-normal text-muted">
             {completed
               ? "Completed"
               : `Question ${progress.current + 1} of ${progress.total}`}
@@ -77,7 +77,7 @@ export default function InterviewChat({
 
       {/* Messages */}
       <article
-        className="flex-1 overflow-y-auto bg-[#f8f8f6] p-4 md:px-8 md:py-6"
+        className="flex-1 overflow-y-auto bg-background p-4 md:px-8 md:py-6"
         ref={chatRef}
       >
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-4">
@@ -88,7 +88,7 @@ export default function InterviewChat({
           {action &&
             (action.loading ? (
               <div className="flex w-full justify-start">
-                <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-[#e4e5df] bg-white p-4 text-sm text-[#686b64]">
+                <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border border-line bg-surface p-4 text-sm text-muted">
                   <Loader className="size-4 animate-spin" />
                   {action.loadingLabel}
                 </div>
@@ -98,10 +98,10 @@ export default function InterviewChat({
                 <button
                   type="button"
                   onClick={action.onClick}
-                  className="flex h-11 cursor-pointer items-center justify-center gap-2.5 rounded-[10px] border border-[#f4ce38] bg-[#f4ce38] px-5 text-sm font-semibold text-[#20221f] transition-all duration-200 hover:brightness-95 active:scale-[0.99]"
+                  className="flex h-11 cursor-pointer items-center justify-center gap-2.5 rounded-[10px] border border-accent bg-accent px-5 text-sm font-semibold text-on-accent transition-all duration-200 hover:brightness-95 active:scale-[0.99]"
                 >
                   {action.label}
-                  <ArrowRight size={16} color="#20221f" />
+                  <ArrowRight size={16} className="text-on-accent" />
                 </button>
               </div>
             ))}
@@ -111,9 +111,9 @@ export default function InterviewChat({
       {/* Input bar */}
       <form
         onSubmit={onSubmit}
-        className="w-full shrink-0 border-t border-[#e4e5df] bg-white p-4"
+        className="w-full shrink-0 border-t border-line bg-surface p-4"
       >
-        <div className="mx-auto flex w-full max-w-3xl items-center gap-3 rounded-full border border-[#e4e5df] bg-white py-1.5 pl-5 pr-1.5">
+        <div className="mx-auto flex w-full max-w-3xl items-center gap-3 rounded-full border border-line bg-surface py-1.5 pl-5 pr-1.5">
           <textarea
             disabled={inputDisabled}
             onChange={(e) => onUserAnswerChange(e.target.value)}
@@ -133,13 +133,13 @@ export default function InterviewChat({
             rows="1"
             style={{ maxHeight: "100px", overflowY: "auto" }}
             onInput={handleTextareaInput}
-            className="min-w-0 grow resize-none bg-transparent text-sm leading-relaxed text-[#20221f] outline-none placeholder:text-[#92958c] disabled:opacity-60"
+            className="min-w-0 grow resize-none bg-transparent text-sm leading-relaxed text-ink outline-none placeholder:text-faint disabled:opacity-60"
           />
           <button
             disabled={inputDisabled}
             type="submit"
             aria-label="Send answer"
-            className={`flex-center size-10 shrink-0 rounded-full bg-[#f4ce38] text-[#20221f] transition-all duration-200 ${
+            className={`flex-center size-10 shrink-0 rounded-full bg-accent text-on-accent transition-all duration-200 ${
               canSubmit
                 ? "cursor-pointer hover:brightness-95 active:scale-95"
                 : "cursor-not-allowed opacity-40"

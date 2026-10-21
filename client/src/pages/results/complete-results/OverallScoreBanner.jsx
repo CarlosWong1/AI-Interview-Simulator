@@ -1,23 +1,23 @@
 export default function OverallScoreBanner({score, headline, summary, questionScores}) {
   return (
-    <div className="flex flex-col gap-8 rounded-[20px] bg-[#20221f] p-8 lg:flex-row lg:items-center lg:gap-9">
+    <div className="flex flex-col gap-8 rounded-[20px] bg-coal p-8 lg:flex-row lg:items-center lg:gap-9">
       {/* Score display */}
       <div className="flex w-40 shrink-0 flex-col items-center gap-1.5 self-center">
-        <div className="flex-center size-[120px] flex-col rounded-full bg-[#2c2e2b]">
-          <p className="text-[44px] font-bold leading-normal text-[#f4ce38]">
+        <div className="flex-center size-[120px] flex-col rounded-full bg-ink-strong">
+          <p className="text-[44px] font-bold leading-normal text-accent">
             {score}
           </p>
-          <p className="text-[13px] leading-normal text-[#686b64]">
+          <p className="text-[13px] leading-normal text-muted">
             out of 100
           </p>
         </div>
-        <span className="rounded-full bg-[#f4ce38] px-2.5 py-1 text-[11px] font-semibold leading-normal text-[#20221f]">
+        <span className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold leading-normal text-on-accent">
           Overall score
         </span>
       </div>
 
       {/* Divider */}
-      <div className="hidden w-px shrink-0 self-center bg-white/10 lg:block h-[110px]" />
+      <div className="hidden w-px shrink-0 self-center bg-surface/10 lg:block h-[110px]" />
 
       {/* Score summary */}
       <div className="flex min-w-0 flex-1 flex-col items-start gap-3.5">
@@ -34,9 +34,9 @@ export default function OverallScoreBanner({score, headline, summary, questionSc
         {questionScores.map((questionScore, index) => (
           <div
             key={index}
-            className="flex items-center gap-2.5 rounded-[10px] bg-white/8 px-3.5 py-2.5"
+            className="flex items-center gap-2.5 rounded-[10px] bg-surface/8 px-3.5 py-2.5"
           >
-            <span className="rounded bg-white/12 px-1.5 py-0.5 text-[10px] font-semibold leading-normal text-white/60">
+            <span className="rounded bg-surface/12 px-1.5 py-0.5 text-[10px] font-semibold leading-normal text-white/60">
               Q{index + 1}
             </span>
             <p className="whitespace-nowrap text-white flex-center">

@@ -5,6 +5,7 @@ import InterviewChat from "./InterviewChat.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase.js";
 import WorkspaceFooter from "./select-topic/WorkspaceFooter.jsx";
+import { TOPICS } from "../../lib/TOPICS.js";
 
 export default function InterviewPage() {
   const STAGES = {
@@ -30,6 +31,8 @@ export default function InterviewPage() {
   const [responses, setResponses] = useState([]);
 
   const navigate = useNavigate();
+
+  const topic = TOPICS.find((t) => t.value === selectedTopic);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -76,7 +79,7 @@ export default function InterviewPage() {
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleTopicSelection = async () => {
-    if (!selectedTopic) return;
+    if (!topic) return;
 
     if (!user) {
       console.log("User not authenticate");
@@ -107,7 +110,7 @@ export default function InterviewPage() {
     await delay(1000);
     addLocalMessage(
       "AI",
-      `Hello, welcome to your ${selectedTopic} interview.`,
+      `Hello, welcome to your ${topic?.label} interview.`,
     );
     await delay(2000);
     addLocalMessage(
@@ -189,7 +192,7 @@ export default function InterviewPage() {
       addLocalMessage("AI", "I am now analyzing your your response...");
 
       const allResponses = [...responses, currentResponse];
-      const url = `${import.meta.env.VITE_API_URL}/api/interview/evaluate`;
+      const url = `${baseUrl}/api/interview/evaluate`;
 
       const payload = {
         topic: selectedTopic,
@@ -271,7 +274,7 @@ export default function InterviewPage() {
   if (stage === STAGES.INTRODUCTION) {
     return (
       <InterviewChat
-        topic={selectedTopic}
+        topic={topic?.label}
         messages={messages}
         inputDisabled
         userAnswer={userAnswer}
@@ -293,7 +296,7 @@ export default function InterviewPage() {
   if (stage === STAGES.INTERVIEW) {
     return (
       <InterviewChat
-        topic={selectedTopic}
+        topic={topic?.label}
         progress={{ current: currentQuestion, total: questions.length }}
         completed={interviewComplete}
         messages={messages}

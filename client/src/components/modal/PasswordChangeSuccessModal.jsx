@@ -7,29 +7,29 @@ export default function PasswordChangeSuccessModal({ onClose }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md bg-white shadow-[0px_0px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg p-8 flex flex-col items-center text-center gap-4"
+        className="relative w-full max-w-md bg-surface shadow-[0px_0px_6px_0px_rgba(0,_0,_0,_0.1)] rounded-lg p-8 flex flex-col items-center text-center gap-4"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 cursor-pointer text-black/50 hover:text-black transition-colors duration-200"
+          className="absolute top-4 right-4 cursor-pointer text-muted hover:text-ink transition-colors duration-200"
         >
           <X size={24} />
         </button>
-        <div className="flex-center w-16 h-16 bg-green-500/20 rounded-full">
+        <div className="flex-center w-16 h-16 bg-success/20 rounded-full">
           <CircleCheck size={32} />
         </div>
         <h1 className="text-2xl font-bold">Password Updated</h1>
-        <p className="text-black/70">
+        <p className="text-muted">
           Your password has been changed successfully.
         </p>
-        <p className="text-sm text-black/60">
+        <p className="text-sm text-faint">
           For your security, you may need to sign in again on other devices.
         </p>
         <button
           onClick={onClose}
-          className="bg-yellow-300 border font-semibold rounded px-4 py-2 cursor-pointer hover:bg-black hover:text-white transition-all duration-200 ease-in-out"
+          className="bg-accent border-ink-strong text-on-accent border font-semibold rounded px-4 py-2 cursor-pointer hover:bg-ink hover:text-background transition-all duration-200 ease-in-out"
         >
           Done
         </button>

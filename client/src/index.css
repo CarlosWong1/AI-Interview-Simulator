@@ -1,7 +1,74 @@
 @import "tailwindcss";
 
+/* Dark mode is toggled via a .dark class on <html> (see useTheme hook), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background-color: rgb(248 248 248);
+  --background: #f8f8f6;
+  --surface: #ffffff;
+  --hover: #f3f4ef;
+  --hover-strong: #e9ebe4;
+  --ink: #20221f;
+  --ink-strong: #2c2e2b;
+  --muted: #686b64;
+  --faint: #92958c;
+  --line: #e4e5df;
+  --line-strong: #ced0c7;
+  --accent: #f4ce38;
+  --accent-hover: #dab628;
+  --on-accent: #20221f;
+  --accent-tint: #fffbe9;
+  --danger: #b83d36;
+  --danger-strong: #8f2e28;
+  --danger-tint: #fff6f5;
+  --danger-border: #ebcdc9;
+  --success: #15803d;
+}
+
+.dark {
+  --background: #161712;
+  --surface: #1f201a;
+  --hover: #282a22;
+  --hover-strong: #323429;
+  --ink: #f0f1e8;
+  --ink-strong: #2c2e2b;
+  --muted: #b2b4a6;
+  --faint: #8b8e7f;
+  --line: #383a2e;
+  --line-strong: #4c4e40;
+  --accent: #f4ce38;
+  --accent-hover: #e0ba26;
+  --on-accent: #20221f;
+  --accent-tint: #3b351a;
+  --danger: #e06058;
+  --danger-strong: #f08a83;
+  --danger-tint: #3c2521;
+  --danger-border: #663a33;
+  --success: #4ade80;
+}
+
+/* Register the variables as Tailwind color utilities (bg-surface, text-ink, border-line, ...) */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-hover: var(--hover);
+  --color-hover-strong: var(--hover-strong);
+  --color-ink: var(--ink);
+  --color-ink-strong: var(--ink-strong);
+  --color-coal: #20221f;
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-tint: var(--accent-tint);
+  --color-danger: var(--danger);
+  --color-danger-strong: var(--danger-strong);
+  --color-danger-tint: var(--danger-tint);
+  --color-danger-border: var(--danger-border);
+  --color-success: var(--success);
 }
 
 * {
@@ -20,7 +87,7 @@ html, body {
 }
 
 body {
-  background-color: var(--background-color);
+  background-color: var(--background);
 }
 
 @utility flex-center {

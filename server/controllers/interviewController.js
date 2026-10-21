@@ -1,4 +1,5 @@
 import { generateInterviewQuestions, generateResultEvaluation } from "../services/ai-service.js";
+import { interviewTopics } from "../lib/InterviewTopics.js";
 
 export const getInterviewTopic = async (req, res) => {
   try {
@@ -8,7 +9,13 @@ export const getInterviewTopic = async (req, res) => {
       return res.status(400).json({error: "Topic is required"});
     }
 
-    const questions = await generateInterviewQuestions(topic);
+    if (typeof topic !== "string" || !Object.hasOwn(interviewTopics, topic)) {
+      return res.status(400).json({error: "Invalid interview topic"});
+    }
+
+    const selectedTopic = interviewTopics[topic];
+
+    const questions = await generateInterviewQuestions(selectedTopic);
     
     return res.status(200).json(questions);
   }

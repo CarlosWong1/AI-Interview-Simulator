@@ -10,31 +10,31 @@ export default function Footer() {
   }
   
   return (
-    <footer className="border-t border-[#e4e5df] bg-white px-4 py-8 sm:px-8 lg:px-16">
+    <footer className="border-t border-line bg-surface px-4 py-8 sm:px-8 lg:px-16">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <span className="flex-center size-8 shrink-0 rounded-lg bg-[#f4ce38]">
+            <span className="flex-center size-8 shrink-0 rounded-lg bg-accent">
               <AudioLines size={21} color="#ffffff" strokeWidth={2.25} />
             </span>
-            <span className="whitespace-nowrap text-[23px] leading-normal text-[#20221f]">
+            <span className="whitespace-nowrap text-[23px] leading-normal text-ink">
               PrepFlow
             </span>
           </div>
           <div className="flex gap-6">
             <a
               onClick={handleAboutModal}
-              className="text-[13px] leading-normal text-[#686b64] transition-colors hover:text-[#20221f] cursor-pointer"
+              className="text-[13px] leading-normal text-muted transition-colors hover:text-ink cursor-pointer"
             >
               About
             </a>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#f3f4ef] pt-4">
-          <p className="text-xs leading-normal text-[#92958c]">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-hover pt-4">
+          <p className="text-xs leading-normal text-faint">
             © 2026 PrepFlow. All rights reserved.
           </p>
-          <p className="text-xs leading-normal text-[#92958c]">
+          <p className="text-xs leading-normal text-faint">
             A little practice today. A little more confidence tomorrow.
           </p>
         </div>

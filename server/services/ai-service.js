@@ -11,7 +11,6 @@ if (!process.env.GEMINI_API_KEY) {
 
 const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
 
-// THIS IS GETTING THE QUESTIONS FROM GEMINI
 const interviewQuestionsJsonSchema = {
   type: "object",
   properties: {
@@ -32,10 +31,22 @@ const interviewQuestionsJsonSchema = {
 
 const interviewQuestionsSchema = z.fromJSONSchema(interviewQuestionsJsonSchema);
 
+// THIS IS GETTING THE QUESTIONS FROM GEMINI
 export async function generateInterviewQuestions(topic) {
+  const generateQuestionsPrompt = `
+    You are an experienced technical interviewer.
+
+    Interview topic: ${topic.title}
+    Description: ${topic.description}
+    Subtopics: ${topic.subtopics.join(", ")}
+
+    Generate exactly 3 interview questions.
+    Include a mix of conceptual and practical questions.
+    Avoid asking overly generic questions.
+  `
   const response = await ai.interactions.create({
     model: "gemini-3.5-flash-lite",
-    input: `Give me three junior interview questions about ${topic}`,
+    input: generateQuestionsPrompt,
     response_format: {
       type: "text",
       mime_type: "application/json",
@@ -46,7 +57,6 @@ export async function generateInterviewQuestions(topic) {
   return question;
 }
 
-// THIS IS GETTING THE EVALUATION FROM GEMINI
 const resultEvaluationJsonSchema = {
   type: "object",
   properties: {
@@ -102,6 +112,7 @@ const resultEvaluationJsonSchema = {
 
 const resultEvaluationSchema = z.fromJSONSchema(resultEvaluationJsonSchema);
 
+// THIS IS GETTING THE EVALUATION FROM GEMINI
 export async function generateResultEvaluation(topic, responses) {
   const resultEvaluationPrompt = `
     You are a senior software engineer conducting a technical interview for a junior software developer.
