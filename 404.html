@@ -5,8 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/AI-Interview-Simulator/prepflow-favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PrepFLow</title>
-    <script type="module" crossorigin src="/AI-Interview-Simulator/assets/index-c84hSJ2e.js"></script>
-    <link rel="stylesheet" crossorigin href="/AI-Interview-Simulator/assets/index-Ch3w6MAe.css">
+    <script>
+      // Apply the saved (or OS) theme before React loads to avoid a light-mode flash
+      (function () {
+        try {
+          var stored = localStorage.getItem("prepflow-theme");
+          var dark =
+            stored === "dark" ||
+            (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/AI-Interview-Simulator/assets/index-tRk40ekK.js"></script>
+    <link rel="stylesheet" crossorigin href="/AI-Interview-Simulator/assets/index-CJFrfVmk.css">
   </head>
   <body>
     <div id="root"></div>
