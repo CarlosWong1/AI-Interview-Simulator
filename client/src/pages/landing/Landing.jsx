@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { replace, useNavigate } from "react-router-dom";
+import { supabase } from "../../lib/supabase";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -50,6 +53,21 @@ const yellowButtonStyle =
   "flex h-12 cursor-pointer items-center justify-center gap-2.5 rounded-[10px] border border-[#f4ce38] bg-[#f4ce38] px-6 text-sm font-semibold text-[#20221f] transition-all duration-200 hover:brightness-95 active:scale-[0.99]";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("auth") !== "confirmed") return;
+
+    const redirectToLogin = async () => {
+      await supabase.auth.signOut();
+
+      navigate("/login", {replace: true});
+    }
+    redirectToLogin();
+  }, navigate);
+
   return (
     <div className="w-full">
       {/* Navbar */}

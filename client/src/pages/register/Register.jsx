@@ -93,7 +93,7 @@ export default function RegisterPage() {
             email,
             password,
             options: {
-              emailRedirectTo: "http://localhost:5173/login",
+              emailRedirectTo: `${window.location.origin}${import.meta.env.BASE_URL}?auth=confirmed`,
               data: {
                 full_name: fullName
               },
