@@ -9,7 +9,7 @@ import {
 
 export const TOPICS = [
   {
-    value: "fontend",
+    value: "frontend",
     label: "Frontend Development",
     icon: PanelsTopLeft,
     description:

@@ -85,7 +85,6 @@ export default function InterviewPage() {
       console.log("User not authenticate");
       return;
     }
-    console.log("User:", user);
     const { data, error: interviewError } = await supabase
       .from("interviews")
       .insert({
@@ -94,8 +93,7 @@ export default function InterviewPage() {
       })
       .select()
       .single();
-
-    console.log("Interview:", data);
+      
     console.log("Error:", interviewError);
 
     if (interviewError) {
@@ -129,6 +127,7 @@ export default function InterviewPage() {
     const payload = {
       topic: selectedTopic,
     };
+    console.log("Sending topic:", selectedTopic);
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -138,11 +137,12 @@ export default function InterviewPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error(`Failed to post: ${response.status}`);
-      }
       const result = await response.json();
 
+      if (!response.ok) {
+        throw new Error(result.error || `Request failed: ${response.status}`);
+      }
+      
       console.log(`Sucess:`, result.questions);
 
       setQuestions(result.questions);
