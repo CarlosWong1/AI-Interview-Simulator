@@ -1,0 +1,13 @@
+name: PrepFlow CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say hello
+        run: echo "Hello from PrepFlow!"
