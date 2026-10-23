@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { Link } from "react-router-dom";
 import {
@@ -66,7 +66,7 @@ export default function LandingPage() {
       navigate("/login", {replace: true});
     }
     redirectToLogin();
-  }, navigate);
+  }, [navigate]);
 
   return (
     <div className="w-full">

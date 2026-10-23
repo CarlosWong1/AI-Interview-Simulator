@@ -35,7 +35,7 @@ export default function HistoryPage() {
       setLoading(false);
     }
     getInterviews();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (<LoadingState></LoadingState>)

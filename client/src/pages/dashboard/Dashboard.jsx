@@ -3,10 +3,13 @@ import ReturningUserPage from "./returning-user/ReturningUserPage.jsx";
 import LoadingState from "../../components/LoadingState";
 import { supabase } from "../../lib/supabase.js";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const [completedInterviews, setCompletedInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getInterviews = async () => {
@@ -31,7 +34,7 @@ export default function DashboardPage() {
       setLoading(false);
     }
     getInterviews();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return (<LoadingState></LoadingState>)
