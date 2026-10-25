@@ -94,6 +94,14 @@ jobs:
         working-directory: client
         env: 
           VITE_API_URL: ${{vars.VITE_API_URL}}
+          run: |
+            node -e "
+              const url = process.env.VITE_API_URL;
+              console.log('API URL:', JSON.stringify(url));
+              if (!url || !url.startsWith('https://')) {
+                throw new Error('Invalid VITE_API_URL');
+              }
+            "
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
