@@ -16,4 +16,8 @@ app.use(express.json());
 app.use("/api/interview", interviewRouter)
 app.use("/api/account", accountRouter);
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({status: "ok"});
+})
+
 export default app;

@@ -4,12 +4,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.GEMINI_API_KEY) {
-  console.error("ERROR: GEMINI_API_KEY is not defined in your environment!");
-  process.exit(1);
-}
+function getAIClient() {
+  const apiKey = process.env.GEMINI_API_KEY;
 
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY is not configured");
+  }
+
+  return new GoogleGenAI({ apiKey });
+}
 
 const interviewQuestionsJsonSchema = {
   type: "object",
@@ -44,6 +47,8 @@ export async function generateInterviewQuestions(topic) {
     Include a mix of conceptual and practical questions.
     Avoid asking overly generic questions.
   `
+  const ai = getAIClient();
+
   const response = await ai.interactions.create({
     model: "gemini-3.5-flash-lite",
     input: generateQuestionsPrompt,
@@ -141,6 +146,9 @@ export async function generateResultEvaluation(topic, responses) {
 
     Return only valid JSON that matches the provided response schema.
   `;
+
+  const ai = getAIClient();
+
   const response = await ai.interactions.create({
     model: "gemini-3.5-flash-lite",
     input: resultEvaluationPrompt,
