@@ -211,7 +211,7 @@ export default function InterviewPage() {
         }
         const result = await response.json();
 
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from("interviews")
           .update({
             feedback: result,
