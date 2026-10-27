@@ -1,5 +1,5 @@
-import { supabaseAdmin } from "../lib/supabaseAdmin.js";
-import { supabase } from "../lib/supabase.js";
+import { getSupabaseAdmin } from "../lib/supabaseAdmin.js";
+import { getSupabase } from "../lib/supabase.js";
 
 export const deleteAccount = async (req, res) => {
   try {
@@ -16,12 +16,14 @@ export const deleteAccount = async (req, res) => {
       return res.status(400).json({error: "Password is required"});
     }
 
+    const supabaseAdmin = getSupabaseAdmin();
     const {data: {user}, error} = await supabaseAdmin.auth.getUser(token);
 
      if (error || !user) {
       return res.status(401).json({error: "Unauthorized"});
     }
 
+    const supabase = getSupabase();
     const {error: signInError} = await supabase.auth.signInWithPassword({
       email: user.email,
       password: password

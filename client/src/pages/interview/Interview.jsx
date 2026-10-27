@@ -142,8 +142,6 @@ export default function InterviewPage() {
       if (!response.ok) {
         throw new Error(result.error || `Request failed: ${response.status}`);
       }
-      
-      console.log(`Sucess:`, result.questions);
 
       setQuestions(result.questions);
       setLoading(false);
@@ -212,9 +210,8 @@ export default function InterviewPage() {
           throw new Error(`Failed to post: ${response.status}`);
         }
         const result = await response.json();
-        console.log("Interview feedback: ", result);
 
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from("interviews")
           .update({
             feedback: result,
@@ -227,8 +224,6 @@ export default function InterviewPage() {
           console.error(error.message);
           return;
         }
-
-        console.log(data);
 
         addLocalMessage(
           "AI",
