@@ -40,6 +40,7 @@ export default function InterviewPage() {
 
   const isSubmittingRef = useRef(false);
   const pendingMessageIdRef = useRef(null);
+  const pendingAnswerIdRef = useRef(null);
 
   const topic = TOPICS.find((t) => t.value === selectedTopic);
 
@@ -188,13 +189,17 @@ export default function InterviewPage() {
 
     if (isSubmittingRef.current || interviewComplete || failedOperation === "ai_question") return;
     if (userAnswer.trim() === "") return;
+    if (!pendingAnswerIdRef.current) {
+      pendingAnswerIdRef.current = crypto.randomUUID();
+    }
 
     isSubmittingRef.current = true;
     
     setErrorMessage("");
 
     try {
-      await addMessage("User", userAnswer);
+      await addMessage("User", userAnswer, pendingAnswerIdRef.current);
+      pendingAnswerIdRef.current = null;
 
       const hasNext = currentQuestion + 1 < questions.length;
 
