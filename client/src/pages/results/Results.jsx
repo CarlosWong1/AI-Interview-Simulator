@@ -27,7 +27,6 @@ export default function ResultsPage() {
         return;
       }
       setFeedbackInterview(data);
-      console.log(data)
     }
     getFeedback();
   }, [interviewId]);
@@ -40,8 +39,10 @@ export default function ResultsPage() {
     return (<LoadingState></LoadingState>)
   }
 
-  if (!feedbackInterview.feedback) {
-    return (<NoResultsPage />);
+  const feedback = feedbackInterview?.feedback;
+
+  if (!feedback || !Array.isArray(feedback.question_feedback)) {
+    return <NoResultsPage />;
   }
 
   return (

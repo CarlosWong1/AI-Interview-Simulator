@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import WelcomePractice from "./WelcomePractice";
 import InterviewStatistics from "./InterviewStatistics";
 import RecentInterviews from "./RecentInterviews";
-
-// Placeholder until streaks are tracked for real
-const CURRENT_STREAK_DAYS = 4;
+import { calculateStreak } from "../../../utils/calculateStreak";
 
 export default function ReturningUserPage() {
   const [user, setUser] = useState(null);
@@ -65,6 +63,8 @@ export default function ReturningUserPage() {
     navigate("/interview")
   }
 
+  const streakDays = calculateStreak(completedInterview);
+
   return (
     <div className="flex flex-col min-h-full py-10 mx-auto w-full md:w-3/4 max-w-6xl px-5 gap-10">
       <WelcomePractice
@@ -76,7 +76,7 @@ export default function ReturningUserPage() {
         averageScore={Math.round(averageScore)}
         bestScore={bestInterview.feedback.overall_score}
         bestTopic={bestInterview.topic}
-        streakDays={CURRENT_STREAK_DAYS}
+        streakDays={streakDays}
       />
       <RecentInterviews
         interviews={lastThree}

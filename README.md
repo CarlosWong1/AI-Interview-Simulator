@@ -17,8 +17,8 @@ Built with React, Node.js, Express, PostgreSQL, and the Gemini API.
 - PostgreSQL
 
 ### AI
-- OpenAI API
+- Gemini API
 
 ## Status
 
-Still in development, but feel free to check it =  https://carloswong1.github.io/AI-Interview-Simulator/
+Currently in development, but you can check my website https://carloswong1.github.io/AI-Interview-Simulator/
