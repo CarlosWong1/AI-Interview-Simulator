@@ -18,6 +18,18 @@
 
 ---
 
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#tech-stack">Tech Stack</a> ·
+  <a href="#how-it-works">How It Works</a> ·
+  <a href="#application-architecture">Architecture</a> ·
+  <a href="#getting-started">Getting Started</a> ·
+  <a href="#screenshots">Screenshots</a> ·
+  <a href="#roadmap">Roadmap</a> ·
+  <a href="#contact">Contact</a>
+</p>
+
 ## Overview
 
 PrepFlow is a full-stack web application for practicing job interviews in a structured, low-pressure environment. Choose a topic, complete a text-based interview with three AI-generated questions, and receive personalized feedback on your answers.
@@ -137,7 +149,20 @@ npm test --prefix server
 
 ### Landing Page
 
-![Landing Page](client/public/PrepFlow-Image.png)
+<div align="center">
+  <a href="client/public/PrepFlow-Image.png">
+    <img src="client/public/PrepFlow-Image.png" alt="PrepFlow landing page" width="800">
+  </a>
+  <p><em>The landing page — hero, features, and how it works</em></p>
+</div>
+
+<!-- Add more screenshots here, e.g.
+### Dashboard
+<div align="center">
+  <img src="docs/screenshots/dashboard.png" alt="PrepFlow dashboard" width="800">
+  <p><em>The returning-user dashboard</em></p>
+</div>
+-->
 
 ## Current Limitations
 
