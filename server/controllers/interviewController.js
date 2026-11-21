@@ -20,7 +20,8 @@ export const createInterviewTopicController = (generateQuestions) => {
 
       return res.status(200).json(questions);
     } catch (error) {
-      return res.status(500).json({ error: error.message });
+      console.error("Failed to generate interview questions:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   };
 };
@@ -28,18 +29,23 @@ export const createInterviewTopicController = (generateQuestions) => {
 export const getInterviewTopic =
   createInterviewTopicController(generateInterviewQuestions);
 
-export const getInterviewEvaluation = async (req, res) => {
-  try {
-    const { topic, responses } = req.body;
+export const createInterviewEvaluation = (generateEvaluation) => {
+  return async (req, res) => {
+    try {
+      const { topic, responses } = req.body;
 
-    if (!topic || !Array.isArray(responses) || responses.length === 0) {
-      return res.status(400).json({ error: "Topic and responses required" });
+      if (!topic || !Array.isArray(responses) || responses.length === 0) {
+        return res.status(400).json({ error: "Topic and responses required" });
+      }
+
+      const result = await generateEvaluation(topic, responses);
+
+      return res.status(200).json(result);
+    } catch (error) {
+      console.error("Failed to evaluate interview responses:", error);
+      return res.status(500).json({ error: "Internal server error" });
     }
+  };
+}
 
-    const result = await generateResultEvaluation(topic, responses);
-
-    return res.status(200).json(result);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+export const getInterviewEvaluation = createInterviewEvaluation(generateResultEvaluation);

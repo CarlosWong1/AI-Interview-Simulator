@@ -53,7 +53,6 @@ export default function DeleteAccountConfirmationModal({ onClose }) {
       }
 
       const data = await response.json();
-      console.log(data);
 
       await supabase.auth.signOut();
       onClose();

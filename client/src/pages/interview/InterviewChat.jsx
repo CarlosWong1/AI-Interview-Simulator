@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowRight, Loader, Send } from "lucide-react";
+import { ArrowRight, Loader, Send, TriangleAlert } from "lucide-react";
 import { DEFAULT_TOPIC_ICON, TOPIC_ICONS } from "../../lib/topicIcons";
 
 function Message({ message }) {
@@ -32,6 +32,7 @@ export default function InterviewChat({
   progress,
   completed = false,
   messages,
+  error = "",
   action = null,
   userAnswer,
   onUserAnswerChange,
@@ -47,7 +48,7 @@ export default function InterviewChat({
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
-  }, [messages, action]);
+  }, [messages, error, action]);
 
   const handleTextareaInput = (e) => {
     e.target.style.height = "auto";
@@ -84,6 +85,15 @@ export default function InterviewChat({
           {messages.map((message) => (
             <Message key={message.id} message={message} />
           ))}
+
+          {error && (
+            <div className="flex w-full justify-start">
+              <div className="flex max-w-[85%] items-start gap-2.5 rounded-2xl rounded-bl-md border border-danger-border bg-danger-tint p-4">
+                <TriangleAlert size={16} className="mt-0.5 shrink-0 text-danger" />
+                <p className="text-sm leading-relaxed text-danger">{error}</p>
+              </div>
+            </div>
+          )}
 
           {action &&
             (action.loading ? (
