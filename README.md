@@ -6,8 +6,6 @@
 
 # AI Interview Simulator
 
-_An AI-powered interview practice platform — practice mock interviews, get AI-generated feedback, and track your progress._
-
 [![License: MIT][license-shield]][license-url]
 [![React][react-shield]][react-url]
 [![Node.js][node-shield]][node-url]
@@ -15,77 +13,108 @@ _An AI-powered interview practice platform — practice mock interviews, get AI-
 [![Gemini][gemini-shield]][gemini-url]
 
 <a href="https://carloswong1.github.io/AI-Interview-Simulator/"><strong>« Try the Live Demo »</strong></a>
-<br />
-<br />
-<a href="#getting-started">Get Started</a>
-·
-<a href="#roadmap">Roadmap</a>
-·
-<a href="https://github.com/CarlosWong1/AI-Interview-Simulator/issues">Report Bug</a>
-·
-<a href="https://github.com/CarlosWong1/AI-Interview-Simulator/issues">Request Feature</a>
 
 </div>
 
-## About The Project
+---
 
-AI Interview Simulator (PrepFlow) lets you practice realistic mock interviews with an AI that asks real interview questions — not generic prompts. Every session is scored, and you receive actionable feedback you can act on before the real thing.
+<p align="center">
+  <a href="#overview">Overview</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#tech-stack">Tech Stack</a> ·
+  <a href="#how-it-works">How It Works</a> ·
+  <a href="#application-architecture">Architecture</a> ·
+  <a href="#getting-started">Getting Started</a> ·
+  <a href="#screenshots">Screenshots</a> ·
+  <a href="#roadmap">Roadmap</a> ·
+  <a href="#contact">Contact</a>
+</p>
 
-Here's what you can do with it:
+## Overview
 
-* **Practice realistic mock interviews** — pick from six practice areas, from frontend development to behavioral interviews
-* **Have a natural conversation** — no rigid forms or multiple choice, just a real back-and-forth with follow-up questions, like an actual interviewer
-* **Get actionable feedback** — an overall score, a headline summary, your strengths, areas to improve, and per-question feedback
-* **Track every session** — every interview is saved, so you can look back and walk into the next one sharper
+PrepFlow is a full-stack web application for practicing job interviews in a structured, low-pressure environment. Choose a topic, complete a text-based interview with three AI-generated questions, and receive personalized feedback on your answers.
 
-Built with:
+PrepFlow is **not** a voice interview or a live, adaptive conversation. The questions are generated for the selected topic; they do not change based on your previous answers.
 
-* [![React][react-shield]][react-url]
-* [![Vite][vite-shield]][vite-url]
-* [![Tailwind CSS][tailwind-shield]][tailwind-url]
-* [![Node.js][node-shield]][node-url]
-* [![Express][express-shield]][express-url]
-* [![Supabase][supabase-shield]][supabase-url]
-* [![Gemini][gemini-shield]][gemini-url]
+The app also saves completed interviews so you can review feedback and monitor your practice over time.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Features
+
+- **Six interview topics**: Frontend Development, Backend Development, System Design, Data Structures & Algorithms, Behavioral Interview, and Product Management.
+- **AI-generated questions**: Three questions for each interview session, answered by typing.
+- **Personalized feedback**: Overall score, strengths, areas for improvement, and feedback for each question.
+- **Interview history**: Revisit completed interviews and their results.
+- **Progress dashboard**: View interview statistics, recent sessions, and your daily practice streak.
+- **User accounts**: Sign up, sign in, and access your own interview records using Supabase Authentication.
+- **Protected API**: Backend authentication and request rate limiting for AI interview endpoints.
+
+## Tech Stack
+
+| Layer                     | Technologies                                                        |
+| ------------------------- | ------------------------------------------------------------------- |
+| **Frontend**              | React, Vite, JavaScript, Tailwind CSS, React Router, Lucide React   |
+| **Backend**               | Node.js, Express                                                    |
+| **Database & auth**       | Supabase (PostgreSQL, Auth)                                         |
+| **AI**                    | Google Gemini API                                                   |
+| **Testing**               | Node.js test runner, Supertest                                      |
+| **Deployment & CI/CD**    | GitHub Pages (frontend), Render (backend), GitHub Actions           |
+
+## How It Works
+
+1. Create an account or sign in.
+2. Choose a topic from the six available practice areas.
+3. Start an interview and answer three AI-generated questions in text.
+4. Receive feedback after submitting the final answer.
+5. Review your results and track your interview history and daily practice streak on the dashboard.
+
+## Application Architecture
+
+```text
+React + Vite frontend (GitHub Pages)
+  ├── Supabase Auth (sign-in and sessions)
+  ├── Supabase database (interviews, messages, feedback)
+  └── Express API (Render)
+        ├── Auth verification and rate limiting
+        └── Google Gemini API (questions and evaluation)
+```
+
+The Gemini API key stays on the server; it should never be placed in a `VITE_` environment variable.
 
 ## Getting Started
 
-Follow these steps to get a local copy up and running.
-
 ### Prerequisites
 
-* **Node.js** (v18 or later) and npm
-  ```sh
-  npm install npm@latest -g
-  ```
-* A **Supabase** project (free tier works) — [supabase.com](https://supabase.com)
-* A **Google Gemini API key** — [Google AI Studio](https://aistudio.google.com/apikey)
+- Node.js and npm (use a version supported by the installed Vite release)
+- A [Supabase](https://supabase.com) project
+- A [Google Gemini API key](https://aistudio.google.com/apikey)
 
-### Installation
+### Local Setup
 
-1. Clone the repo
+1. Clone the repository
+
    ```sh
    git clone https://github.com/CarlosWong1/AI-Interview-Simulator.git
    cd AI-Interview-Simulator
    ```
-2. Install the root packages (used to run the client and server together)
+
+2. Install dependencies
+
    ```sh
    npm install
-   ```
-3. Install the client and server packages
-   ```sh
    npm install --prefix client
    npm install --prefix server
    ```
-4. Create a `.env` file in the **`client/`** folder with your Supabase and API details:
+
+3. Create `client/.env`
+
    ```env
    VITE_SUPABASE_URL=your_supabase_project_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
    VITE_API_URL=http://localhost:5000
    ```
-5. Create a `.env` file in the **`server/`** folder with your Gemini API key and Supabase credentials:
+
+4. Create `server/.env`
+
    ```env
    PORT=5000
    GEMINI_API_KEY=your_gemini_api_key
@@ -93,87 +122,99 @@ Follow these steps to get a local copy up and running.
    SUPABASE_ANON_KEY=your_supabase_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
    ```
-6. Run the client and server together from the repo root:
+
+   > **Important:** Never commit `.env` files or expose the Supabase service-role key or Gemini API key in frontend code.
+
+5. Configure Supabase
+
+   This repository requires a Supabase project with the application's `interviews` and `messages` tables, authentication configured, and appropriate row-level security policies. The environment variables alone do not create the database schema. You will need to configure the schema and policies separately to run your own instance.
+
+6. Start the frontend and backend
+
    ```sh
    npm run dev
    ```
 
-The client runs on Vite (with a proxy that forwards `/api` calls to the server), and the Express API listens on port 5000.
+   The Vite frontend runs locally (normally at http://localhost:5173) and the Express API listens on http://localhost:5000.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Run Checks
 
-## Usage
+```sh
+npm run lint --prefix client
+npm run build --prefix client
+npm test --prefix server
+```
 
-1. **Create an account** — sign up with your name, email, and a password, then verify your email
-2. **Pick a topic** — from the dashboard, start your first interview and choose one of six practice areas
-3. **Answer the AI's questions** — the interview runs as a conversation, with the AI asking follow-ups like a real interviewer
-4. **Review your feedback** — when the interview ends, the AI evaluates your answers and you get a full results page: overall score, strengths, areas to improve, and a question-by-question review
-5. **Track your progress** — your history keeps every session so you can measure improvement over time
+## Screenshots
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Landing Page
+
+<div align="center">
+  <a href="client/public/PrepFlow-Image.png">
+    <img src="client/public/PrepFlow-Image.png" alt="PrepFlow landing page" width="800">
+  </a>
+  <p><em>The landing page — hero, features, and how it works</em></p>
+</div>
+
+<!-- Add more screenshots here, e.g.
+### Dashboard
+<div align="center">
+  <img src="docs/screenshots/dashboard.png" alt="PrepFlow dashboard" width="800">
+  <p><em>The returning-user dashboard</em></p>
+</div>
+-->
+
+## Current Limitations
+
+- Interviews are text-only; voice input and audio responses are not supported.
+- Each session uses three generated questions, without adaptive follow-up questions.
+- The daily streak is calculated from the creation dates of interviews that have completed feedback; an interview spanning midnight is attributed to its start date.
+- The repository does not currently provide a one-command Supabase database/schema setup.
 
 ## Roadmap
 
-- [ ] Password reset flow
+- [x] Topic-based AI interview questions
+- [x] AI-generated interview feedback and results
+- [x] Interview history and dashboard statistics
+- [x] Daily practice streak tracking
 - [ ] Voice-based interviews
-- [ ] Real practice-streak tracking
-- [ ] Industry-specific question banks
-- [ ] Deeper feedback with progress tracking over time
+- [ ] Adaptive follow-up questions
+- [ ] Progress visualizations across multiple interviews
+- [ ] More specialized interview topics
 
-See the [open issues](https://github.com/CarlosWong1/AI-Interview-Simulator/issues) for the full list of proposed features (and known issues).
+## About This Project
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+PrepFlow is a personal full-stack portfolio project built to practice integrating a React frontend, an Express backend, authentication, a database, and an external AI API into a complete application. It also includes automated backend tests and a CI/CD workflow.
 
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Suggestions and bug reports are welcome through [GitHub Issues](https://github.com/CarlosWong1/AI-Interview-Simulator/issues).
 
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Contact
 
 Carlos Wong — [GitHub](https://github.com/CarlosWong1)
 
-Project Link: [https://github.com/CarlosWong1/AI-Interview-Simulator](https://github.com/CarlosWong1/AI-Interview-Simulator)
+Repository: [AI-Interview-Simulator](https://github.com/CarlosWong1/AI-Interview-Simulator)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Live site: [PrepFlow](https://carloswong1.github.io/AI-Interview-Simulator/)
 
 ## Acknowledgments
 
-* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
-* [Supabase](https://supabase.com)
-* [Google Gemini API](https://ai.google.dev/)
-* [Lucide Icons](https://lucide.dev)
+- [Google Gemini](https://ai.google.dev/)
+- [Supabase](https://supabase.com/)
+- [Lucide](https://lucide.dev/)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right"><a href="#readme-top">Back to top</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg
 [license-url]: LICENSE
 [react-shield]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [react-url]: https://reactjs.org/
-[vite-shield]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
-[vite-url]: https://vite.dev/
-[tailwind-shield]: https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white
-[tailwind-url]: https://tailwindcss.com/
 [node-shield]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
 [node-url]: https://nodejs.org/
-[express-shield]: https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white
-[express-url]: https://expressjs.com/
 [supabase-shield]: https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white
 [supabase-url]: https://supabase.com/
 [gemini-shield]: https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=google_gemini&logoColor=white
